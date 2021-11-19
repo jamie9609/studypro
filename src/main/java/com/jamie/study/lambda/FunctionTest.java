@@ -1,5 +1,6 @@
 package com.jamie.study.lambda;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -16,6 +17,8 @@ import java.util.stream.Collectors;
 public class FunctionTest {
 
     public static void main(String[] args) {
+
+        System.out.println(LocalDateTime.parse("2021-11-15T00:00:00"));
 
         // Function 接受一个参数，返回一个结果
         Function<Integer,Integer> lambdaFunc = o -> o * o;

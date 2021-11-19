@@ -29,11 +29,24 @@ public class StreamDemo {
 
     public static void main(String[] args) {
 
+        /*List<Integer> list = Arrays.asList(1, 2, 3, 4);
 
-        System.out.println(DateUtil.format(new Date(), "yyyyMMddHHmm"));
+        list.stream().mapToInt(v -> v * v).forEach(System.out::println);
+*/
+        Consumer<Integer> consumer1 = x -> System.out.println("first x = " + x);
+        Consumer<Integer> consumer2 = x -> {
+            System.out.println("second x = " + x);
+            throw new NullPointerException("throw exception test");
+        };
+
+        Consumer<Integer> consumer3 = x -> System.out.println("third x = " + x);
+
+        consumer1.andThen(consumer3).andThen(consumer2).accept(1);
+
+        /*System.out.println(DateUtil.format(new Date(), "yyyyMMddHHmm"));
         System.out.println(DateUtil.format(new Date(), "yyyyMMddHH"));
         System.out.println(DateUtil.format(new Date(), "yyyyMMdd"));
-
+*/
         /*String[] testCase = {"hello", "best"};
         List<String> strings = Arrays.asList(testCase).stream().filter(v -> v.equals("hello")).collect(Collectors.toList());
         List<String> strings2 = Arrays.asList(testCase).parallelStream().filter(v -> v.equals("hello")).collect(Collectors.toList());
