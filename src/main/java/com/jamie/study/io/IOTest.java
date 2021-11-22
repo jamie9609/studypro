@@ -14,7 +14,7 @@ public class IOTest {
     public static void main(String[] args) throws IOException {
         File file = new File("./test.txt");
         write(file);
-        System.out.println(read(file));
+        System.out.println(read2(file));
     }
 
     /**
@@ -46,6 +46,31 @@ public class IOTest {
         }
 
         inputStreamReader.close();
+        return sb.toString();
+    }
+
+    /**
+     * 字符缓冲流
+     *
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    public static String read2(File file) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        // 用来接收读取的字节数组
+        StringBuilder sb = new StringBuilder();
+
+        // 按行读数据
+        String line;
+        // 循环取数据
+        while ((line = br.readLine()) != null) {
+            // 将读取的内容转换成字符串
+            sb.append(line);
+        }
+        // 关闭流
+        br.close();
+
         return sb.toString();
     }
 
