@@ -14,6 +14,7 @@ public class CurrentConditions implements Observer{
     private String pressure;
     private String humidity;
 
+    @Override
     public void update(String temperature, String pressure, String humidity) {
         this.temperature = temperature;
         this.humidity = humidity;
