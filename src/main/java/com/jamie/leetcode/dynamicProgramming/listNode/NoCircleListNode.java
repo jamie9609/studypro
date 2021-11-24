@@ -142,6 +142,104 @@ public class NoCircleListNode {
         slow.next = slow.next.next;
         return pre.next;
     }
+
+    public ListNode reverseList(ListNode head) {
+        if (Objects.isNull(head)) {
+            return null;
+        }
+        if (Objects.isNull(head.next)) {
+            return head;
+        }
+        ListNode list = reverseList(head.next);
+
+        head.next.next = head;
+        head.next = null;
+        return list;
+    }
+
+    /**
+     * 反转链表前n个节点
+     * @param head
+     * @param n
+     * @return
+     */
+    ListNode successor = null;
+    public ListNode reverseN (ListNode head, int n) {
+        if (n == 1) {
+            // 记录第 n + 1 个节点
+            successor = head.next;
+            return head;
+        }
+        // 以 head.next 为起点，需要反转前 n - 1 个节点
+        ListNode last = reverseN(head.next, n - 1);
+
+        head.next.next = head;
+        // 让反转之后的 head 节点和后面的节点连起来
+        head.next = successor;
+        return last;
+
+    }
+
+    /**
+     * 反转left到right之间的链表
+     * @param head
+     * @param left
+     * @param right
+     * @return
+     */
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        // bad case;
+        if (left == 1) {
+            // 相当于反转前 n 个元素
+            return reverseN(head, right);
+        }
+        head.next = reverseBetween(head.next, left - 1, right - 1);
+        return head;
+    }
+
+    /**
+     * k个一组反转链表。先反转第一组k个链表，后面用递归。
+     * @param head
+     * @param k
+     * @return
+     */
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if (head == null) {
+            return null;
+        }
+        // 区间 [a, b) 包含 k 个待反转元素
+        ListNode a, b;
+        a = head;
+        b = head;
+        for (int i = 0; i < k; i++) {
+            // 不足 k 个，不需要反转，base case
+            if (b == null) {
+                return head;
+            };
+            b = b.next;
+        }
+        // 反转前 k 个元素
+        ListNode newHead = reverse(a, b);
+        // 递归反转后续链表并连接起来
+        a.next = reverseKGroup(b, k);
+        return newHead;
+    }
+
+    public ListNode reverse(ListNode a, ListNode b) {
+        ListNode pre, cur, nxt;
+        pre = null; cur = a; nxt = a;
+        while (cur != b) {
+            nxt = cur.next;
+            // 逐个结点反转
+            cur.next = pre;
+            // 更新指针位置
+            pre = cur;
+            cur = nxt;
+        }
+        // 返回反转后的头结点
+        return pre;
+    }
+
 }
 
 

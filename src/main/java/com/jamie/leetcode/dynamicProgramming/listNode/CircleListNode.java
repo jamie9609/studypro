@@ -57,5 +57,50 @@ public class CircleListNode {
         return null;
     }
 
+    /**
+     * 反转从a节点到b节点的链表.[a,b),半开半闭区间
+     * @param left
+     * @param right
+     * @return
+     */
+    public ListNode reverse(ListNode left, ListNode right) {
+        ListNode pre, cur, next;
+        pre = null;
+        cur = left;
+        next = left;
+
+        while (cur != right) {
+            next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+        }
+        return pre;
+    }
+
+    /**
+     * k个一组反转链表。先反转第一组的k个链表，然后递归反转后面的。
+     * @param head
+     * @param k
+     * @return
+     */
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if (head == null) {
+            return null;
+        }
+        ListNode left = head, right= head;
+
+        for (int i = 0 ; i < k ; i ++) {
+            if (Objects.isNull(right)) {
+                return head;
+            }
+            right = right.next;
+        }
+        //反转前k个元素
+        ListNode reverse = reverse(left, right);
+        // 递归反转后续的链表并连接起来
+        left.next = reverseKGroup(right, k);
+        return reverse;
+    }
 
 }
