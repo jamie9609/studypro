@@ -118,7 +118,7 @@ public class ClassicTreeNode {
         String right = helpers(root.right);
         String left = helpers(root.left);
 
-        String result = right + left + String.valueOf(root.val);
+        String result = right + "," + left + "," + root.val;
         Integer num = cache.getOrDefault(result, 0);
         if (num == 1) {
             res.add(root);
