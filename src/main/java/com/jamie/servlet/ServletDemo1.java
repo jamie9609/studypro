@@ -2,6 +2,7 @@ package com.jamie.servlet;
 
 import lombok.extern.slf4j.Slf4j;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,5 +34,11 @@ public class ServletDemo1 extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doGet(req, resp);
+    }
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        log.info("config = {}", config.getServletContext().getClassLoader());
     }
 }
