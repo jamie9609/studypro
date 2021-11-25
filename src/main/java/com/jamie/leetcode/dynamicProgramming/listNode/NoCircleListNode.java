@@ -16,7 +16,7 @@ public class NoCircleListNode {
 
     @NoArgsConstructor
     @AllArgsConstructor
-    public class ListNode {
+    public static class ListNode {
         int val;
         ListNode next;
         ListNode(int val) {
@@ -240,6 +240,58 @@ public class NoCircleListNode {
         return pre;
     }
 
+    /**
+     * 回文链表
+     * @param head
+     * @return
+     */
+    public static boolean isPalindrome(ListNode head) {
+        if (Objects.isNull(head)) {
+            return false;
+        }
+        ListNode left = head, right = head;
+
+        while (Objects.nonNull(right) && Objects.nonNull(right.next) && Objects.nonNull(left.next)) {
+            left = left.next;
+            right = right.next.next;
+        }
+        if (Objects.nonNull(right) ) {
+            left = left.next;
+        }
+        ListNode leftFlag = head;
+        ListNode rightFlag = reverse2(left);
+
+        while (Objects.nonNull(rightFlag)) {
+            if (leftFlag.val != rightFlag.val) {
+                return false;
+            }
+            leftFlag = leftFlag.next;
+            rightFlag = rightFlag.next;
+        }
+        return true;
+    }
+
+    public static ListNode reverse2(ListNode head) {
+        ListNode pre, cur, next;
+        pre = null;
+        cur = head;
+        next = head;
+        while (Objects.nonNull(cur)) {
+            next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+        }
+        return pre;
+    }
+
+
+    public static void main(String[] args) {
+        ListNode node2 = new ListNode(2);
+        ListNode node1 = new ListNode(1, node2);
+
+        System.out.println(isPalindrome(node1));
+    }
 }
 
 
