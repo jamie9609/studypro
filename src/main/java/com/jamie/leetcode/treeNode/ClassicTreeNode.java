@@ -3,6 +3,11 @@ package com.jamie.leetcode.treeNode;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
+
 /**
  * @PackageName: com.jamie.leetcode.treeNode
  * @ClassName: ClassicTreeNode
@@ -85,6 +90,41 @@ public class ClassicTreeNode {
         root.right = helper2(inorder, rootIndex + 1, inOrderIndexEnd,
                 postorder, postorderIndexEnd - inorderDistance , postorderIndexEnd - 1);
         return root;
+    }
+
+    /**
+     * 给定一棵二叉树，返回所有重复的子树。对于同一类的重复子树，你只需要返回其中任意一棵的根结点即可。
+     * 两棵树重复是指它们具有相同的结构以及相同的结点值。
+     * 方法：遍历每个节点，把以每个节点为根节点的二叉树序列化，找到序列化一样的树即可。
+     * @param root
+     * @return
+     */
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+        if (Objects.isNull(root)){
+            return null;
+        }
+        helpers(root);
+        return res;
+    }
+    //记录所有子树出现的次数
+    HashMap<String, Integer> cache = new HashMap<>();
+    // 记录重复的子树根节点
+    LinkedList<TreeNode> res = new LinkedList<>();
+
+    public String helpers(TreeNode root) {
+        if (Objects.isNull(root)) {
+            return "#";
+        }
+        String right = helpers(root.right);
+        String left = helpers(root.left);
+
+        String result = right + left + String.valueOf(root.val);
+        Integer num = cache.getOrDefault(result, 0);
+        if (num == 1) {
+            res.add(root);
+        }
+        cache.put(result, num + 1);
+        return result;
     }
 
 }
