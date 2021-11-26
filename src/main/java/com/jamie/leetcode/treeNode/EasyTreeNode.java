@@ -1,6 +1,5 @@
 package com.jamie.leetcode.treeNode;
 
-import com.jamie.study.designPattern.deepClone.DeepProtoType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
