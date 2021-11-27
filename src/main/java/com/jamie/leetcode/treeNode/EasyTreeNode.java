@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -134,4 +135,44 @@ public class EasyTreeNode {
         }
         p.right = right;
     }
+
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        if (Objects.isNull(root)) {
+            return false;
+        }
+        if ( Objects.isNull(root.right) &&  Objects.isNull(root.left) ) {
+            return root.val == targetSum;
+        }
+
+        return hasPathSum(root.left, targetSum - root.val) ||
+                hasPathSum(root.right, targetSum - root.val);
+    }
+
+    /**
+     * 给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。
+     * @param root
+     * @param p
+     * @param q
+     * @return
+     */
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(Objects.isNull(root)) {
+            return null;
+        }
+        if (root == p || root == q) {
+            return root;
+        }
+        TreeNode leftNode = lowestCommonAncestor(root.left, p, q);
+        TreeNode rightNode = lowestCommonAncestor(root.right, p, q);
+
+        if (leftNode != null && rightNode != null) {
+            return root;
+        }
+        if (leftNode == null && rightNode == null) {
+            return null;
+        }
+        return leftNode == null ? rightNode : leftNode;
+    }
+
 }
+
