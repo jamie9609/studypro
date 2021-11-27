@@ -127,4 +127,66 @@ public class ClassicTreeNode {
         return result;
     }
 
+
+    /**
+     * 给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
+     * @param root
+     * @param p
+     * @param q
+     * @return
+     */
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null) {
+            return null;
+        }
+        if (root == p || root == q) {
+            return root;
+        }
+
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+        // 情况 1
+        if (left != null && right != null) {
+            return root;
+        }
+        // 情况 2
+        if (left == null && right == null) {
+            return null;
+        }
+        // 情况 3
+        return left == null ? right : left;
+    }
+
+    /**
+     * 给你一棵 完全二叉树 的根节点 root ，求出该树的节点个数。
+     *
+     * 完全二叉树 的定义如下：在完全二叉树中，除了最底层节点可能没填满外，其余每层节点数都达到最大值，并且最下面一层的节点都集中在该层最左边的若干位置。
+     * 若最底层为第 h 层，则该层包含 1~2h个节点。
+     *
+     * @return
+     */
+    public int countNodes(TreeNode root) {
+        if (Objects.isNull(root)) {
+            return 0;
+        }
+        int leftDeep, rightDeep;
+        TreeNode tmpLeft = root;
+        TreeNode tmpRight = root;
+        leftDeep = 0;
+        rightDeep = 0;
+        while (Objects.nonNull(tmpLeft)) {
+            tmpLeft = tmpLeft.left;
+            leftDeep ++;
+        }
+
+        while (Objects.nonNull(tmpRight)) {
+            tmpRight = tmpRight.right;
+            rightDeep ++;
+        }
+        if (leftDeep == rightDeep) {
+            return (int)Math.pow(2, rightDeep) - 1;
+        }
+        return countNodes(root.left) + countNodes(root.right) + 1;
+    }
+
 }
