@@ -4,7 +4,9 @@ import jdk.internal.org.objectweb.asm.tree.analysis.BasicInterpreter;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -15,12 +17,15 @@ import java.util.Objects;
  * @Date: 2021/11/25 5:34 下午
  */
 public class BSTTreeNode {
+    private static int[][] memo;
+
     @NoArgsConstructor
     @AllArgsConstructor
     public class TreeNode {
         int val;
         TreeNode left;
         TreeNode right;
+
         public TreeNode(int val) {
             this.val = val;
         }
@@ -29,6 +34,7 @@ public class BSTTreeNode {
     /**
      * 给定一个二叉搜索树的根节点 root，和一个整数 k，请你设计一个算法查找其中第 k 个最小元素（从 1 开始计数）。
      * BST的中序遍历就是一个升序数组。
+     *
      * @param root
      * @param k
      * @return
@@ -45,6 +51,7 @@ public class BSTTreeNode {
 
     /**
      * 计算第k小的元素，将结果和排名记录下来。
+     *
      * @param root
      * @param k
      */
@@ -82,10 +89,11 @@ public class BSTTreeNode {
      * 这就是我们之前说的，需要在二叉树节点中维护额外信息。每个节点需要记录，以自己为根的这棵二叉树有多少个节点。
      * 有了 size 字段，外加 BST 节点左小右大的性质，对于每个节点 node 就可以通过 node.left 推导出 node 的排名，从而做到我们刚才说到的对数级算法。
      *
-    */
+     */
 
     /**
      * 给定一个二叉搜索树，请将它的每个节点的值替换成树中大于或者等于该节点值的所有节点值之和。
+     *
      * @param root
      * @return
      */
@@ -96,6 +104,7 @@ public class BSTTreeNode {
     }
 
     int sum = 0;
+
     public void traverse(TreeNode root) {
         if (Objects.isNull(root)) {
             return;
@@ -109,16 +118,17 @@ public class BSTTreeNode {
 
     /**
      * 构建二叉树
+     *
      * @param list
      * @return
      */
-    public TreeNode createBinaryTree(LinkedList<Integer> list){
+    public TreeNode createBinaryTree(LinkedList<Integer> list) {
         TreeNode node = null;
-        if(list == null || list.isEmpty()){
+        if (list == null || list.isEmpty()) {
             return null;
         }
         Integer data = list.removeFirst();
-        if( data != null){
+        if (data != null) {
             node = new TreeNode(data);
             node.left = createBinaryTree(list);
             node.right = createBinaryTree(list);
@@ -132,20 +142,21 @@ public class BSTTreeNode {
      * 节点的左子树只包含 小于 当前节点的数。
      * 节点的右子树只包含 大于 当前节点的数。
      * 所有左子树和右子树自身必须也是二叉搜索树。
+     *
      * @param root
      * @return
      */
     public boolean isValidBSTFail(TreeNode root) {
-        if(Objects.isNull(root)) {
+        if (Objects.isNull(root)) {
             return false;
         }
-        if (Objects.nonNull(root.left) ) {
-            if ( root.left.val >= root.val || !isValidBST(root.left)){
+        if (Objects.nonNull(root.left)) {
+            if (root.left.val >= root.val || !isValidBST(root.left)) {
                 return false;
             }
         }
-        if (Objects.nonNull(root.right) ) {
-            if ( root.right.val <= root.val || !isValidBST(root.right)){
+        if (Objects.nonNull(root.right)) {
+            if (root.right.val <= root.val || !isValidBST(root.right)) {
                 return false;
             }
         }
@@ -158,8 +169,10 @@ public class BSTTreeNode {
 
     // 我们通过使用辅助函数，增加函数参数列表，在参数中携带额外信息，将这种约束传递给子树的所有节点，这也是二叉树算法的一个小技巧吧。
     // 适用于通过辅助函数，做迭代
+
     /**
      * 限定以 root 为根的子树节点必须满足 max.val > root.val > min.val
+     *
      * @param root
      * @param min
      * @param max
@@ -169,7 +182,7 @@ public class BSTTreeNode {
         if (root == null) {
             return true;
         }
-        if (min != null && root.val <= min.val ) {
+        if (min != null && root.val <= min.val) {
             return false;
         }
         if (max != null && root.val >= max.val) {
@@ -196,6 +209,7 @@ public class BSTTreeNode {
     /**
      * 给定二叉搜索树（BST）的根节点和一个值。 你需要在BST中找到节点值等于给定值的节点。
      * 返回以该节点为根的子树。 如果节点不存在，则返回 NULL。
+     *
      * @param root
      * @param val
      * @return
@@ -225,6 +239,7 @@ public class BSTTreeNode {
      * 给定二叉搜索树（BST）的根节点和要插入树中的值，将值插入二叉搜索树。 返回插入后二叉搜索树的根节点。
      * 输入数据 保证 ，新值和原始二叉搜索树中的任意节点值都不同。
      * 注意，可能存在多种有效的插入方式，只要树在插入后仍保持为二叉搜索树即可。 你可以返回 任意有效的结果 。
+     *
      * @param root
      * @param val
      * @return
@@ -235,9 +250,9 @@ public class BSTTreeNode {
         }
         TreeNode ans = root;
 
-        if (val > ans.val ) {
+        if (val > ans.val) {
             ans.right = insertIntoBST(ans.right, val);
-        }else {
+        } else {
             ans.left = insertIntoBST(ans.left, val);
         }
         return root;
@@ -249,6 +264,7 @@ public class BSTTreeNode {
      * 一般来说，删除节点可分为两个步骤：
      * 首先找到需要删除的节点；
      * 如果找到了，删除它。
+     *
      * @param root
      * @param key
      * @return
@@ -259,10 +275,10 @@ public class BSTTreeNode {
         }
         if (root.val == key) {
             //找到节点，进行删除
-            if(Objects.isNull(root.left) && Objects.isNull(root.right)) {
+            if (Objects.isNull(root.left) && Objects.isNull(root.right)) {
                 return null;
             }
-            if (Objects.nonNull(root.left) && Objects.isNull(root.right) ) {
+            if (Objects.nonNull(root.left) && Objects.isNull(root.right)) {
                 return root.left;
             }
             if (Objects.nonNull(root.right) && Objects.isNull(root.left)) {
@@ -270,8 +286,11 @@ public class BSTTreeNode {
             }
             if (Objects.nonNull(root.right) && Objects.nonNull(root.left)) {
                 TreeNode min = getMin(root.right);
-                root.val = min.val;
-                root.right = deleteNode(root.right, min.val);
+                //移除最小的节点
+                TreeNode minNode = removeMin(root.right);
+                min.left = root.left;
+                min.right = minNode;
+                root = min;
             }
         } else if (root.val > key) {
             root.left = deleteNode(root.left, key);
@@ -286,5 +305,80 @@ public class BSTTreeNode {
             root = root.left;
         }
         return root;
+    }
+
+    // 删除以 root 为根的 BST 中的最小的节点，利用 BST 的特性
+    private TreeNode removeMin(TreeNode root) {
+        // base case
+        if (root.left == null) {
+            return root.right;
+        }
+        root.left = removeMin(root.left);
+        return root;
+    }
+
+    /**
+     * 给你一个整数 n ，求恰由 n 个节点组成且节点值从 1 到 n 互不相同的 二叉搜索树 有多少种？返回满足题意的二叉搜索树的种数。
+     *
+     * @param n
+     * @return
+     */
+    int[][] ans;
+
+    public int numTrees(int n) {
+        ans = new int[n + 1][n + 1];
+        return helpers(1, n);
+    }
+
+    public int helpers(int left, int right) {
+        if (right < left) {
+            return 1;
+        }
+        if (ans[left][right] != 0) {
+            return ans[left][right];
+        }
+        int res = 0;
+        for (int i = left; i <= right; i ++ ){
+            int leftNums = helpers(left, i - 1);
+            int rightNums = helpers(i + 1, right);
+            res += leftNums * rightNums;
+        }
+        ans[left][right] = res;
+        return res;
+    }
+
+    List<TreeNode>[][] res2;
+
+    public List<TreeNode> generateTrees(int n) {
+        if (n == 0) {
+            return new LinkedList<>();
+        }
+        return helpers3(1, n);
+    }
+    public List<TreeNode> helpers3(int left, int right) {
+        LinkedList<TreeNode> ans = new LinkedList<>();
+        if (right < left) {
+            ans.add(null);
+            return ans;
+        }
+        /*if ( !res2[left][right].isEmpty()) {
+            return res2[left][right];
+        }*/
+
+        for (int i = left; i <= right; i ++) {
+            List<TreeNode> leftTree = helpers3(left, i - 1);
+            List<TreeNode> rightTree = helpers3(i + 1, right);
+
+            for (TreeNode leftItem : leftTree) {
+                for (TreeNode  rightItem : rightTree) {
+                    TreeNode treeNode = new TreeNode(i);
+                    treeNode.left = leftItem;
+                    treeNode.right = rightItem;
+                    ans.add(treeNode);
+                }
+            }
+        }
+        //res2[left][right] = ans;
+        return ans;
     }
 }
