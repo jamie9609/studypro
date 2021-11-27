@@ -21,7 +21,7 @@ public class BSTTreeNode {
 
     @NoArgsConstructor
     @AllArgsConstructor
-    public class TreeNode {
+    public static class TreeNode {
         int val;
         TreeNode left;
         TreeNode right;
@@ -380,5 +380,106 @@ public class BSTTreeNode {
         }
         //res2[left][right] = ans;
         return ans;
+    }
+
+    /**
+     * 给你一棵以 root 为根的 二叉树 ，请你返回 任意 二叉搜索子树的最大键值和。
+     * res[0] 记录以 root 为根的二叉树是否是 BST，若为 1 则说明是 BST，若为 0 则说明不是 BST；
+     * res[1] 记录以 root 为根的二叉树所有节点中的最小值；
+     * res[2] 记录以 root 为根的二叉树所有节点中的最大值；
+     * res[3] 记录以 root 为根的二叉树所有节点值之和。
+     * @param root
+     * @return
+     */
+    int maxSum = 0;
+    public int maxSumBST(TreeNode root) {
+        traverse2(root);
+        return maxSum;
+    }
+
+    public int[] traverse2(TreeNode root) {
+        if (Objects.isNull(root)) {
+            return new int[]{1, Integer.MAX_VALUE, Integer.MIN_VALUE, 0};
+        }
+        // 递归计算左右子树
+        int[] left = traverse2(root.left);
+        int[] right = traverse2(root.right);
+
+        int[] res = new int[4];
+        if (left[0] == 1 && right[0] == 1 &&
+                root.val > left[2] && root.val < right[1]) {
+            res[0] = 1;
+            res[1] = Math.min(left[1], root.val);
+            res[2] = Math.max(right[2], root.val);
+            res[3] = left[3] + right[3] + root.val;
+            maxSum = Math.max(maxSum, res[3]);
+        }else {
+            res[0] = 0;
+        }
+        return res;
+    }
+
+
+    /**
+     * 序列化是将一个数据结构或者对象转换为连续的比特位的操作，进而可以将转换后的数据存储在一个文件或者内存中，同时也可以通过网络传输到另一个计算机环境，
+     * 采取相反方式重构得到原数据。请设计一个算法来实现二叉树的序列化与反序列化。
+     * 这里不限定你的序列 / 反序列化算法执行逻辑，你只需要保证一个二叉树可以被序列化为一个字符串并且将这个字符串反序列化为原始的树结构。
+     *
+     * @param root
+     * @return
+     */
+
+    // 代表分隔符的字符
+    public static String SEP = ",";
+    // 代表 null 空指针的字符
+    public static String NULL = "#";
+    // 用于拼接字符串
+    public static StringBuilder sb = new StringBuilder();
+    // Encodes a tree to a single string.
+    public static String serialize(TreeNode root) {
+
+        helper4(root);
+        return sb.toString();
+    }
+
+    public static void helper4(TreeNode root) {
+        if (Objects.isNull(root)) {
+            sb.append(NULL).append(SEP);
+            return;
+        }
+
+        sb.append(root.val).append(SEP);
+        helper4(root.left);
+        helper4(root.right);
+    }
+
+    // Decodes your encoded data to tree.
+    public static TreeNode deserialize(String data) {
+        LinkedList<String> nodes = new LinkedList<>();
+        for (String s : data.split(SEP)) {
+            nodes.addLast(s);
+        }
+        return helper4(nodes);
+    }
+
+    public static TreeNode helper4(LinkedList<String> nodes) {
+        if (nodes.isEmpty()) {
+            return null;
+        }
+        String s = nodes.removeFirst();
+
+        if (s.equals(NULL)) {
+            return null;
+        }
+        TreeNode root = new TreeNode(Integer.parseInt(s));
+
+        root.left = helper4(nodes);
+        root.right = helper4(nodes);
+        return root;
+    }
+
+
+    public static void main(String[] args) {
+        System.out.println(deserialize("1,2,3").val);
     }
 }
