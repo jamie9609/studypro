@@ -12,7 +12,7 @@ import java.util.List;
  * @Author: jamiezhangming
  * @Date: 2021/11/28 1:04 下午
  */
-public class graphCase {
+public class GraphCase {
 
     /**
      * 给你一个有n个节点的 有向无环图（DAG），请你找出所有从节点 0到节点 n-1的路径并输出（不要求按特定顺序）

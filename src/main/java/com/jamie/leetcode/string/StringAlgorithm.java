@@ -11,7 +11,7 @@ import java.util.LinkedList;
  * @Author: jamiezhangming
  * @Date: 2021/11/27 8:39 下午
  */
-public class stringAlgorithm {
+public class StringAlgorithm {
 
     public static String convert(String s, int numRows) {
         /*if (numRows == 1) {
