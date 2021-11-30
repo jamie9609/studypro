@@ -1,4 +1,4 @@
-package com.jamie.leetcode.mapReduce;
+package com.jamie.javastudy.mapReduce;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -36,13 +36,13 @@ public class CovidSumDriver {
         job.setOutputValueClass(CovidCountBean.class);
 
         // 配置作业的输入数据路径
-        FileInputFormat.setInputPaths(job, new Path("src/main/java/com/jamie/leetcode/mapReduce/case1"));
+        FileInputFormat.setInputPaths(job, new Path("src/main/java/com/jamie/javastudy/mapReduce/case1"));
         // 配置作业的输出数据路径
-        FileOutputFormat.setOutputPath(job, new Path("src/main/java/com/jamie/leetcode/mapReduce/case2"));
+        FileOutputFormat.setOutputPath(job, new Path("src/main/java/com/jamie/javastudy/mapReduce/case2"));
 
 
         //判断输出路径是否存在 如果存在删除
-        Path outputPath = new Path("src/main/java/com/jamie/leetcode/mapReduce/case2");
+        Path outputPath = new Path("src/main/java/com/jamie/javastudy/mapReduce/case2");
         outputPath.getFileSystem(conf).delete(outputPath,true);
 
         // 提交作业并等待执行完成

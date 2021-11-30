@@ -1,4 +1,4 @@
-package com.jamie.leetcode.mapReduce;
+package com.jamie.javastudy.mapReduce;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
