@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "mapreduce.framework.name",
+      "type": "java.lang.String",
+      "description": "Description for mapreduce.framework.name."
+  }
+] }
