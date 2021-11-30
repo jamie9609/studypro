@@ -1,5 +1,7 @@
 package com.jamie.leetcode.graph;
 
+import java.util.*;
+
 /**
  * @PackageName: com.jamie.leetcode.graph
  * @ClassName: Dijkstra3
@@ -20,12 +22,68 @@ public class Dijkstra3 {
      * @return
      */
     public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
+        List<double[]>[] graph = new LinkedList[n];
+        for (int i = 0; i < n; i ++){
+            graph[i] = new LinkedList<>();
+        }
 
-        return 1.0;
+        for (int i = 0; i < edges.length; i ++ ) {
+            int from = edges[i][0];
+            int to = edges[i][1];
+            double weight  = succProb[i];
+            // 无向图就是双向图；先把 int 统一转成 double，待会再转回来
+            graph[from].add(new double[]{(double)to, weight});
+            graph[to].add(new double[]{(double)from, weight});
+        }
+        return dijkstra(start, end, graph);
     }
 
+    class State {
+        // 图节点的 id
+        int id;
+        // 从 start 节点到达当前节点的概率
+        double probFromStart;
 
+        State(int id, double probFromStart) {
+            this.id = id;
+            this.probFromStart = probFromStart;
+        }
+    }
 
+    double dijkstra(int start, int end, List<double[]>[] graph) {
+        // 定义：probTo[i] 的值就是节点 start 到达节点 i 的最大概率
+        double[] probTo = new double[graph.length];
+        Arrays.fill(probTo, -1);
+        // base case，start 到 start 的概率就是 1
+        probTo[start] = 1;
 
+        Queue<State> priorityQ = new PriorityQueue<>((a, b) -> Double.compare(b.probFromStart, a.probFromStart));
+
+        priorityQ.offer(new State(start, 1));
+
+        while (!priorityQ.isEmpty()) {
+            State curState = priorityQ.poll();
+            int curNodeId = curState.id;
+            double curNodeProbFromStart = curState.probFromStart;
+
+            if (curNodeId == end) {
+                return curNodeProbFromStart;
+            }
+
+            if ( curNodeProbFromStart < probTo[curNodeId] ) {
+                continue;
+            }
+
+            for ( double[] item : graph[curNodeId]) {
+                int nextNodeId = (int) item[0];
+                double nextNodeProbFromStart = probTo[curNodeId] * item[1];
+                if (probTo[nextNodeId] < nextNodeProbFromStart) {
+                    probTo[nextNodeId] = nextNodeProbFromStart;
+                    priorityQ.offer(new State(nextNodeId, nextNodeProbFromStart));
+                }
+            }
+        }
+        return 0.0;
+    }
 
 }
