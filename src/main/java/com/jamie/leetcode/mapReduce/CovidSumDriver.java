@@ -7,9 +7,8 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-
-
 /**
+ * mapreduce 学习参考：https://cloud.tencent.com/developer/article/1886450
  * @PackageName: com.jamie.leetcode.mapReduce
  * @ClassName: CovidSumDriver
  * @Description:
