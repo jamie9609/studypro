@@ -3,6 +3,10 @@ package com.jamie.leetcode.treeNode;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
+
 /**
  * @PackageName: com.jamie.leetcode.treeNode
  * @ClassName: MidTreeNode
@@ -71,5 +75,37 @@ public class MidTreeNode {
         root.right = helper(nums, index + 1, hi);
 
         return root;
+    }
+
+
+    /**
+     * 层序遍历
+     * @param root
+     * @return
+     */
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> ans = new LinkedList<>();
+        if (Objects.isNull(root)) {
+            return ans;
+        }
+        LinkedList<TreeNode> waitQueue = new LinkedList<>();
+
+        waitQueue.addLast(root);
+        while (!waitQueue.isEmpty()) {
+            List<Integer> tmp = new LinkedList<>();
+            int n = waitQueue.size();
+            for (int i = 0; i < n; i ++) {
+                TreeNode tmpNode = waitQueue.removeFirst();
+                tmp.add(tmpNode.val);
+                if (Objects.nonNull(tmpNode.left)) {
+                    waitQueue.addLast(tmpNode.left);
+                }
+                if (Objects.nonNull(tmpNode.right)) {
+                    waitQueue.addLast(tmpNode.right);
+                }
+            }
+            ans.add(tmp);
+        }
+        return ans;
     }
 }
