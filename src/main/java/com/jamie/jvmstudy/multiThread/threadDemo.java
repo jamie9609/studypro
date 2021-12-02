@@ -1,4 +1,4 @@
-package com.jamie.javastudy.multiThread;
+package com.jamie.jvmstudy.multiThread;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -8,7 +8,7 @@ import java.util.concurrent.FutureTask;
 /**
  *
  * 创建线程的多种方式
- * @PackageName: com.jamie.javastudy.multiThread
+ * @PackageName: com.jamie.jvmstudy.multiThread
  * @ClassName: threadDemo
  * @Description:
  * @Author: jamiezhangming
