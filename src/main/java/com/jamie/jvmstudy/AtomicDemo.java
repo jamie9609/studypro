@@ -14,11 +14,19 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class AtomicDemo {
 
-    static AtomicInteger count =  new AtomicInteger();
+    //static AtomicInteger count =  new AtomicInteger();
+
+    volatile static int count = 0;
+
+    /**
+     * volatile 关键字 https://www.cnblogs.com/dolphin0520/p/3920373.html
+     * @throws InterruptedException
+     */
 
     public static void request() throws InterruptedException {
         TimeUnit.MILLISECONDS.sleep(5);
-        count.incrementAndGet();
+        //count.incrementAndGet();
+        count ++;
     }
 
 
