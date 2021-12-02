@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @PackageName: com.jamie.jvmstudy
@@ -26,30 +27,35 @@ public class ExecutorDemo {
 
         System.out.println(System.currentTimeMillis() + "-----------ready-----------");
 
+        AtomicInteger atomicInteger = new AtomicInteger();
+
         ScheduledExecutorService scheduledExecutor = Executors.newScheduledThreadPool(10);
 
         Runnable runnable = () -> {
             try {
                 TimeUnit.SECONDS.sleep(1);
+                int increment = atomicInteger.getAndIncrement();
+                System.out.println(Thread.currentThread().getName() + "a执行测试:" + increment);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println(Thread.currentThread().getName() + "执行测试1");
         };
 
         Runnable runnable2 = () -> {
             try {
                 TimeUnit.SECONDS.sleep(1);
+                int increment = atomicInteger.getAndIncrement();
+                System.out.println(Thread.currentThread().getName() + "b执行测试:" + increment);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println(Thread.currentThread().getName() + "执行测试2");
         };
 
-        scheduledExecutor.schedule(runnable2, 5, TimeUnit.SECONDS);
-        scheduledExecutor.schedule(runnable2, 2, TimeUnit.SECONDS);
+        scheduledExecutor.scheduleAtFixedRate(runnable, 1,1, TimeUnit.SECONDS);
+        scheduledExecutor.scheduleAtFixedRate(runnable2, 1,1, TimeUnit.SECONDS);
+        //scheduledExecutor.schedule(runnable2, 2, TimeUnit.SECONDS);
 
-        scheduledExecutor.schedule(() ->{
+        /*scheduledExecutor.schedule(() ->{
             System.out.println(System.currentTimeMillis() + "开始执行任务");
             try {
                 TimeUnit.SECONDS.sleep(2);
@@ -70,7 +76,7 @@ public class ExecutorDemo {
             }
             System.out.println(System.currentTimeMillis() + "结束执行任务B");
 
-        }, 10, TimeUnit.SECONDS);
+        }, 10, TimeUnit.SECONDS);*/
 
 
     }
