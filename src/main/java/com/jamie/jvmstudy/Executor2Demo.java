@@ -16,7 +16,7 @@ public class Executor2Demo {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
 
-        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
 
         Runnable runnable = new Runnable(){
             @SneakyThrows
@@ -38,9 +38,9 @@ public class Executor2Demo {
             }
         };
         //一个有返回值
-        //Future<Integer> result = executorService.submit(callable);
+        Future<Integer> result = executorService.submit(callable);
         //一个没有返回值
-        //executorService.submit(runnable);
+        executorService.submit(runnable);
 
         //System.out.println(System.currentTimeMillis() + "," + Thread.currentThread().getName());
         //System.out.println(System.currentTimeMillis() + "," + Thread.currentThread().getName() + ",结果：" + result.get());
