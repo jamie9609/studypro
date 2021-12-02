@@ -1,4 +1,4 @@
-package com.jamie.jvmstudy;
+package com.jamie.jvmstudy.executor;
 
 import lombok.SneakyThrows;
 
