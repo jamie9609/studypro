@@ -1,5 +1,6 @@
 package com.jamie.leetcode.dataStructure;
 
+import java.util.HashMap;
 import java.util.Stack;
 
 /**
@@ -52,10 +53,48 @@ public class MonotoneStack {
         return ans;
     }
 
+    /**
+     * 给你两个 没有重复元素 的数组 nums1 和 nums2 ，其中nums1 是 nums2 的子集。
+     * 请你找出 nums1 中每个元素在 nums2 中的下一个比其大的值。
+     * nums1 中数字 x 的下一个更大元素是指 x 在 nums2 中对应位置的右边的第一个比 x 大的元素。如果不存在，对应位置输出 -1 。
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public static int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        Stack<Integer> stackHelpers = new Stack<>();
+        int[] ans = new int[nums1.length];
+        HashMap<Integer, Integer> value2Ans = new HashMap<>();
+
+        for (int i = nums2.length - 1; i >= 0; i --) {
+
+            while (!stackHelpers.isEmpty() && nums2[i] >= stackHelpers.peek()) {
+                stackHelpers.pop();
+            }
+            if (stackHelpers.isEmpty()) {
+                value2Ans.put(nums2[i] , -1);
+            } else {
+                value2Ans.put(nums2[i] , stackHelpers.peek());
+            }
+            stackHelpers.push(nums2[i]);
+        }
+
+        for (int i = 0; i < nums1.length; i ++) {
+            ans[i] = value2Ans.get(nums1[i]);
+        }
+        return ans;
+    }
+
 
     public static void main(String[] args) {
-        int[] case1 = new int[]{89,62,70,58,47,47,46,76,100,70};
-        System.out.println(dailyTemperatures(case1));
+        StringBuilder sb = new StringBuilder();
+        int[] case2 = new int[]{137,59,92,122,52,131,79,236};
+        int[] case1 = new int[]{137,59,92,122,52,131,79,236};
+        for (int x : nextGreaterElement(case1, case2)) {
+            sb.append(x);
+            sb.append(" ");
+        }
+        System.out.println(sb.toString());
     }
 
 }
