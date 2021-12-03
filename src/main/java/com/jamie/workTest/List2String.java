@@ -19,6 +19,7 @@ public class List2String {
         cityList.add(3);
         cityList.add(4);
         cityList.add(5);
-        System.out.println(cityList.stream().map(String::valueOf).collect(Collectors.joining(",")));
+        System.out.println(cityList.get(3));
+        //System.out.println(cityList.stream().map(String::valueOf).collect(Collectors.joining(",")));
     }
 }
