@@ -70,7 +70,7 @@ public class HeapSortTest {
         if (root == 0) {
             return -1;
         }
-        return root / 2 - 1 / 2;
+        return (root - 1)/2;
     }
     public static void exchange (int[] list, int index1, int index2 ) {
         int tmp = list[index1];
