@@ -1,9 +1,6 @@
 package com.jamie.leetcode.arrayStudy;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 查分数组和前缀和数组。
@@ -352,6 +349,94 @@ public class ArraySkillDemo {
         return true;
     }
 
+
+    /**
+     * 给定两个字符串s 和 p，找到 s 中所有p的异位词的子串，返回这些子串的起始索引。不考虑答案输出的顺序。
+     * 异位词 指由相同字母重排列形成的字符串（包括相同的字符串）。
+     * @param s
+     * @param p
+     * @return
+     */
+    public static List<Integer> findAnagrams(String s, String p) {
+        Map<Character, Integer> window = new HashMap<>();
+        Map<Character, Integer> target = new HashMap<>();
+        if (p.length() == 0 || s.length() == 0) {
+            return new LinkedList<>();
+        }
+
+        int left = 0, right = 0;
+
+        List<Integer> ans = new ArrayList<>();
+
+        //满足条件的字符个数
+        int valid = 0;
+
+        for (int i = 0; i < p.length(); i ++) {
+            target.put(p.charAt(i), target.getOrDefault(p.charAt(i), 0) + 1);
+        }
+
+        while (right < s.length()) {
+            char rightVal = s.charAt(right);
+            right ++;
+            if (target.containsKey(rightVal)) {
+                window.put(rightVal, window.getOrDefault(rightVal, 0 ) + 1);
+                if (window.get(rightVal).equals(target.get(rightVal))) {
+                    valid ++;
+                }
+            }
+            if (right - left <= p.length()) {
+                if (valid == target.size()) {
+                    ans.add(left);
+                }
+                continue;
+            }
+
+            char leftVal = s.charAt(left);
+            left ++;
+            if (target.containsKey(leftVal)) {
+                if (window.get(leftVal).equals(target.get(leftVal))) {
+                    valid --;
+                }
+                window.put(leftVal, window.getOrDefault(leftVal, 0 ) - 1);
+            }
+            if (valid == target.size()) {
+                ans.add(left);
+            }
+
+        }
+        return ans;
+    }
+
+    /**
+     * 给定一个字符串 s ，请你找出其中不含有重复字符的 最长子串 的长度。
+     * @param s
+     * @return
+     */
+    public static int lengthOfLongestSubstring(String s) {
+        Map<Character, Integer> target = new HashMap<>();
+        Map<Character, Integer> window = new HashMap<>();
+        int left = 0, right = 0;
+        if (s.length() == 0) {
+            return 0;
+        }
+        int ans = Integer.MIN_VALUE;
+        while (right < s.length()) {
+            char rightVal = s.charAt(right);
+            char leftVal = s.charAt(left);
+            right ++;
+            if (!target.containsKey(rightVal)) {
+                ans = Math.max(ans, right - left);
+                target.put(rightVal, 1);
+            }else {
+                left ++;
+                right --;
+                target.remove(leftVal);
+            }
+        }
+        return ans;
+    }
+
+
     public static void main(String[] args) {
 
         /*int[] int1 = {9,0,1};
@@ -359,8 +444,9 @@ public class ArraySkillDemo {
         int[][] res = new int[][]{int1,int2};
 
         System.out.println( carPooling(res, 3));*/
-        String s = "adc";
-        String t = "dcda";
-        System.out.println(checkInclusion(s, t));
+        String s = "bbbbbb";
+        String p = "b";
+        //System.out.println(findAnagrams(s, p));
+        System.out.println(lengthOfLongestSubstring(s));
     }
 }
