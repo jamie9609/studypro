@@ -3,6 +3,7 @@ package com.jamie.leetcode.arrayStudy;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 查分数组和前缀和数组。
@@ -188,12 +189,178 @@ public class ArraySkillDemo {
         return true;
     }
 
+
+    public int[] twoSum(int[] numbers, int target) {
+        if (numbers.length == 0) {
+            return null;
+        }
+        int start = 0;
+        int end = numbers.length - 1;
+
+        while (start < end) {
+            if (numbers[start] + numbers[end] == target) {
+                break;
+            }
+            if (numbers[start] + numbers[end] > target) {
+                end --;
+            } else {
+                start ++ ;
+            }
+        }
+
+        int[] ans = new int[2];
+        ans[0] = start + 1;
+        ans[1] = end + 1;
+        return ans;
+
+    }
+
+    /**
+     * 反转数组，用双指针。
+     * @param s
+     */
+    public void reverseString(char[] s) {
+        int left = 0;
+        int right = s.length - 1;
+        while (left < right) {
+            // 交换 arr[left] 和 arr[right]
+            char temp = s[left];
+            s[left] = s[right];
+            s[right] = temp;
+            left++; right--;
+        }
+    }
+
+    /**
+     * 最小覆盖子串
+     * 给你一个字符串 s 、一个字符串 t 。返回 s 中涵盖 t 所有字符的最小子串。如果 s 中不存在涵盖 t 所有字符的子串，则返回空字符串 "" 。
+     * @param s
+     * @param t
+     * @return
+     */
+    public static String minWindow(String s, String t) {
+        HashMap<Character, Integer> need = new HashMap<>();
+        HashMap<Character, Integer> window = new HashMap<>();
+        for (int i = 0; i < t.length(); i ++) {
+            need.put(t.charAt(i), need.getOrDefault(t.charAt(i), 0) + 1);
+        }
+
+        int left = 0, right = 0;
+        int len = s.length();
+        // 记录最小覆盖子串的起始索引及长度
+        int start = 0, lenStr = Integer.MAX_VALUE;
+        //满足 need 条件的字符个数
+        int valid = 0;
+        //移动窗口，左闭右开的区间
+        while (right < len) {
+            char rightChar = s.charAt(right);
+            right ++;
+
+            if ( need.containsKey(rightChar)) {
+                window.put(rightChar, window.getOrDefault(rightChar, 0) + 1);
+                if (window.get(rightChar).equals(need.get(rightChar))) {
+                    valid ++;
+                }
+            }
+            while (valid == need.size()) {
+
+                if (right - left < lenStr) {
+                    start = left;
+                    lenStr = right -left;
+                }
+                char deleteChar = s.charAt(left);
+                left ++;
+
+                if (need.containsKey(deleteChar)) {
+                    if (window.get(deleteChar).equals(need.get(deleteChar))){
+                        valid --;
+                    }
+                    window.put(deleteChar, window.getOrDefault(deleteChar, 0) - 1);
+                }
+            }
+        }
+
+        return  lenStr == Integer.MAX_VALUE ? "" : s.substring(start, start + lenStr);
+
+    }
+
+    /**
+     * 给你两个字符串  s1  和  s2 ，写一个函数来判断 s2 是否包含 s1  的排列。如果是，返回 true ；否则，返回 false 。
+     * 换句话说，s1 的排列之一是 s2 的 子串 。
+     * @param s1
+     * @param s2
+     * @return
+     */
+    public static boolean checkInclusion(String s1, String s2) {
+        if (s1.length() == 0 ) {
+            return true;
+        }
+        if (s1.length() > s2.length()) {
+            return false;
+        }
+        Map<Character, Integer> window = new HashMap<>();
+        Map<Character, Integer> target = new HashMap<>();
+        for (int i = 0; i < s1.length(); i ++) {
+            target.put( s1.charAt(i), target.getOrDefault(s1.charAt(i), 0) + 1);
+        }
+        //左闭右开的区间
+        int left = 0, right = s1.length();
+
+        for (int i = 0; i < right; i ++) {
+            window.put( s2.charAt(i), window.getOrDefault(s2.charAt(i), 0) + 1);
+        }
+        if (equalMap(window, target)) {
+            return true;
+        }
+
+        while ( right < s2.length()) {
+            Character rightVal = s2.charAt(right);
+            Character leftVal = s2.charAt(left);
+            right ++;
+            left ++;
+            window.put(rightVal, window.getOrDefault(rightVal, 0)  + 1);
+            if(window.get(leftVal) > 1) {
+                window.put(leftVal, window.get(leftVal) - 1);
+            } else {
+                window.remove(leftVal);
+            }
+            if (equalMap(window, target)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public static boolean equalMap ( Map<Character, Integer> window, Map<Character, Integer> target) {
+        if (window.isEmpty() && target.isEmpty()) {
+            return true;
+        }
+
+        if (window.size() != target.size()) {
+            return false;
+        }
+
+        for (Map.Entry<Character, Integer> item : window.entrySet()) {
+            if (!target.containsKey(item.getKey())) {
+                return false;
+            }
+            if (!target.get(item.getKey()).equals(item.getValue())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static void main(String[] args) {
 
-        int[] int1 = {9,0,1};
+        /*int[] int1 = {9,0,1};
         int[] int2 = {3,3,7};
         int[][] res = new int[][]{int1,int2};
 
-        System.out.println( carPooling(res, 3));
+        System.out.println( carPooling(res, 3));*/
+        String s = "adc";
+        String t = "dcda";
+        System.out.println(checkInclusion(s, t));
     }
 }
