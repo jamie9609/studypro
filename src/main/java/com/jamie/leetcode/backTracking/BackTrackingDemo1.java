@@ -2,9 +2,7 @@ package com.jamie.leetcode.backTracking;
 
 import org.omg.CORBA.TRANSACTION_MODE;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 回溯算法解析
@@ -45,10 +43,6 @@ public class BackTrackingDemo1 {
         }
     }
 
-    public static void main(String[] args) {
-        int[] case1 = {1, 2};
-        System.out.println(permute(case1));
-    }
 
     /**
      * n 皇后问题 研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。
@@ -107,7 +101,7 @@ public class BackTrackingDemo1 {
         return true;
     }
 
-    public String buildStr(int n, int index) {
+    public static String buildStr(int n, int index) {
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < n; i ++) {
             if (i == index) {
@@ -126,7 +120,7 @@ public class BackTrackingDemo1 {
      * @param k
      * @return
      */
-    public boolean canPartitionKSubsets(int[] nums, int k) {
+    public static boolean canPartitionKSubsets(int[] nums, int k) {
         if (k > nums.length) {
             return false;
         }
@@ -145,7 +139,7 @@ public class BackTrackingDemo1 {
         return backtrack(nums, 0, bucket, target);
     }
 
-    public boolean backtrack(int[] nums,int index, int[] bucket, int target) {
+    public static boolean backtrack(int[] nums,int index, int[] bucket, int target) {
         if ( index == nums.length ) {
             for (int i = 0; i < bucket.length; i++) {
                 if (bucket[i] != target) {
@@ -177,7 +171,7 @@ public class BackTrackingDemo1 {
      * @param nums
      * @return
      */
-    public List<List<Integer>> subsets(int[] nums) {
+    public static List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
         LinkedList<Integer> track = new LinkedList<>();
         res.add(new ArrayList<>());
@@ -185,7 +179,7 @@ public class BackTrackingDemo1 {
         return res;
     }
 
-    public void backTracking (int[] nums, List<List<Integer>> res, LinkedList<Integer> track, int start) {
+    public static void backTracking (int[] nums, List<List<Integer>> res, LinkedList<Integer> track, int start) {
         res.add(new ArrayList<>(track));
 
         for (int i = start; i < nums.length; i ++) {
@@ -195,4 +189,129 @@ public class BackTrackingDemo1 {
         }
     }
 
+    /**
+     * 组合问题。和上面全排列问题的根本不同，在于backTracking算法里的 入参是i+1 还是 start+1。i+1表示不回头的遍历。
+     * 给定两个整数 n 和 k，返回范围 [1, n] 中所有可能的 k 个数的组合。
+     * 你可以按 任何顺序 返回答案。
+     * @param n
+     * @param k
+     * @return
+     */
+    public static List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> track = new ArrayList<>();
+        backTracking2(n, res, track, k, 1);
+        return res;
+    }
+
+
+    public static void backTracking2 (int n, List<List<Integer>> res, List<Integer> track, int k, int start) {
+        if (track.size() == k) {
+            res.add(new ArrayList<>(track));
+            return;
+        }
+
+        for (int i = start; i <= n; i ++) {
+            if (track.contains(i)) {
+                continue;
+            }
+            track.add(i);
+            backTracking2(n, res, track, k, i + 1);
+            track.remove(track.size() - 1);
+        }
+    }
+
+
+    /**
+     * 解数独
+     * 编写一个程序，通过填充空格来解决数独问题。
+     * @param board
+     */
+    public void solveSudoku(char[][] board) {
+        backTracking3(board, 0, 0);
+    }
+
+    public boolean backTracking3(char[][] board, int i, int j) {
+        int m = 9, n = 9;
+        if (j == n) {
+            return backTracking3(board, i + 1, 0);
+        }
+        if (i == m) {
+            // 找到一个可行解，继续下一行
+            return true;
+        }
+
+        if (board[i][j] != '.') {
+            // 如果有预设数字，不用我们穷举
+            return backTracking3(board, i, j + 1);
+        }
+
+        for (char ch = '1'; ch <= '9'; ch ++ ) {
+            if (!isValid3(board, i, j, ch)) {
+                continue;
+            }
+            board[i][j] = ch;
+            if (backTracking3(board, i ,j +1)) {
+                return true;
+            }
+            board[i][j] = '.';
+        }
+        return false;
+    }
+
+    boolean isValid3(char[][] board, int r, int c, char n) {
+        for (int i = 0; i < 9; i++) {
+            if (board[r][i] == n) {
+                return false;
+            }
+
+            if (board[i][c] == n) {
+                return false;
+            }
+            // tips: 判断 3 x 3 方框是否存在重复
+            if (board[(r/3)*3 + i/3][(c/3)*3 + i%3] == n)
+                return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * 数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
+     * @param n
+     * @return
+     */
+    public static List<String> generateParenthesis(int n) {
+        List<String> res = new ArrayList<>();
+        String traces = "";
+        backTracking4(n, n, res, traces);
+        return res;
+    }
+    // 可用的左括号数量为 left 个，可用的右括号数量为 right 个
+    public static void backTracking4(int left, int right, List<String> res, String traces) {
+        if (left == 0 && right == 0) {
+            res.add(traces);
+        }
+        if (right < left) {
+            return;
+        }
+        if (left < 0 || right < 0) {
+            return;
+        }
+
+        traces = traces + "(";
+        backTracking4(left - 1, right, res, traces);
+        traces = traces.substring(0, traces.length() - 1);
+
+        traces = traces + ")";
+        backTracking4(left, right - 1, res, traces);
+        traces = traces.substring(0, traces.length() - 1);
+    }
+
+
+
+
+    public static void main(String[] args) {
+        System.out.println( generateParenthesis(3));
+    }
 }
