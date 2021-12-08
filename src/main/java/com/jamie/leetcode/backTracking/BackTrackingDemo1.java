@@ -1,5 +1,7 @@
 package com.jamie.leetcode.backTracking;
 
+import org.omg.CORBA.TRANSACTION_MODE;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -168,6 +170,29 @@ public class BackTrackingDemo1 {
         return false;
     }
 
+    /**
+     * 子集与全排列的 结构略有不同。需要挨个选择。
+     * 给你一个整数数组 nums ，数组中的元素 互不相同 。返回该数组所有可能的子集（幂集）。
+     * 解集 不能 包含重复的子集。你可以按 任意顺序 返回解集。
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        LinkedList<Integer> track = new LinkedList<>();
+        res.add(new ArrayList<>());
+        backTracking(nums, res, track, 0);
+        return res;
+    }
 
+    public void backTracking (int[] nums, List<List<Integer>> res, LinkedList<Integer> track, int start) {
+        res.add(new ArrayList<>(track));
+
+        for (int i = start; i < nums.length; i ++) {
+            track.add(nums[i]);
+            backTracking(nums, res, track, i + 1);
+            track.removeLast();
+        }
+    }
 
 }
