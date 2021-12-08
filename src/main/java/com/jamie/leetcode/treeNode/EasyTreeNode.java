@@ -3,6 +3,7 @@ package com.jamie.leetcode.treeNode;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -17,7 +18,7 @@ import java.util.Objects;
 public class EasyTreeNode {
     @NoArgsConstructor
     @AllArgsConstructor
-    public class TreeNode {
+    public static class TreeNode {
         int val;
         TreeNode left;
         TreeNode right;
@@ -172,6 +173,64 @@ public class EasyTreeNode {
             return null;
         }
         return leftNode == null ? rightNode : leftNode;
+    }
+
+
+    public static int minDepth(TreeNode root) {
+        if (Objects.isNull(root)) {
+            return 0;
+        }
+        LinkedList<TreeNode> res = new LinkedList<>();
+        res.add(root);
+        int deep = 1;
+        while (!res.isEmpty()) {
+            int size = res.size();
+            for (int i = 0; i < size; i ++) {
+                TreeNode tmp = res.removeFirst();
+                if (Objects.nonNull(tmp.left)) {
+                    res.addLast(tmp.left);
+                }
+                if (Objects.nonNull(tmp.right)) {
+                    res.addLast(tmp.right);
+                }
+                if (Objects.isNull(tmp.left) && Objects.isNull(tmp.right) ){
+                    return deep;
+                }
+            }
+            deep ++;
+        }
+
+        return deep;
+    }
+
+    public static TreeNode buildTree (Integer[] treeCaseNum) {
+        if (treeCaseNum.length == 0) {
+            return null;
+        }
+        LinkedList<TreeNode> ans = new LinkedList<>();
+        for (int i = 0; i < treeCaseNum.length; i ++) {
+            if(treeCaseNum[i] == null) {
+                ans.addLast(null);
+                continue;
+            }
+            ans.addLast(new TreeNode(treeCaseNum[i]) );
+        }
+
+        for (int i = 0; i < ans.size() / 2; i ++) {
+            if (i * 2 + 1 < ans.size()) {
+                ans.get(i).left = ans.get(i * 2 + 1);
+            }
+            if (i * 2 + 2 < ans.size()) {
+                ans.get(i).right = ans.get(i * 2 + 2);
+            }
+        }
+        return ans.getFirst();
+    }
+
+    public static void main(String[] args) {
+        Integer[] testCase = {3, 9, 20, null, null, 15, 7};
+        System.out.println(minDepth(buildTree(testCase)));
+
     }
 
 }
