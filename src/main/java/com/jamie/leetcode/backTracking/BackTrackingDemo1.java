@@ -117,4 +117,57 @@ public class BackTrackingDemo1 {
         return sb.toString();
     }
 
+
+    /**
+     * 给定一个整数数组  nums 和一个正整数 k，找出是否有可能把这个数组分成 k 个非空子集，其总和都相等。
+     * @param nums
+     * @param k
+     * @return
+     */
+    public boolean canPartitionKSubsets(int[] nums, int k) {
+        if (k > nums.length) {
+            return false;
+        }
+        int sum = 0;
+        for (int v : nums) {
+            sum += v;
+        }
+        if (sum % k != 0) {
+            return false;
+        }
+        // k 个桶（集合），记录每个桶装的数字之和
+        int[] bucket = new int[k];
+        // 理论上每个桶（集合）中数字的和
+        int target = sum / k;
+        // 穷举，看看 nums 是否能划分成 k 个和为 target 的子集
+        return backtrack(nums, 0, bucket, target);
+    }
+
+    public boolean backtrack(int[] nums,int index, int[] bucket, int target) {
+        if ( index == nums.length ) {
+            for (int i = 0; i < bucket.length; i++) {
+                if (bucket[i] != target) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        for (int i = 0; i < bucket.length; i++) {
+
+            if (bucket[i] + nums[index] > target) {
+                continue;
+            }
+            // 将 nums[index] 装入 bucket[i]
+            bucket[i] += nums[index];
+            // 递归穷举下一个数字的选择
+            if (backtrack(nums, index + 1, bucket, target)) {
+                return true;
+            }
+            bucket[i] -= nums[index];
+        }
+        return false;
+    }
+
+
+
 }
