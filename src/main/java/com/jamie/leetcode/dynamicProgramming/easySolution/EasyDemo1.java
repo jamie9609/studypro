@@ -1,6 +1,7 @@
 package com.jamie.leetcode.dynamicProgramming.easySolution;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * @PackageName: com.jamie.leetcode.dynamicProgramming.easySolution
@@ -97,13 +98,74 @@ public class EasyDemo1 {
         return res;
     }
 
+    public static int minFallingPathSum(int[][] matrix) {
+        int n = matrix.length;
+        int m = matrix[0].length;
+        int[][] memo = new int[n][n];
+
+        for (int i = 0; i < m ; i ++) {
+            memo[0][i] = matrix[0][i];
+        }
+
+        if (n == 1) {
+           return minNums(matrix[0]);
+        }
+
+        for (int j = 1; j < n; j++) {
+            for (int k = 0; k < m; k ++ ) {
+                if (k - 1 < 0) {
+                    memo[j][k] = Math.min(memo[j - 1][k], memo[j - 1][k + 1]) + matrix[j][k];
+                } else if (k + 1 >= m) {
+                    memo[j][k] = Math.min(memo[j - 1][k - 1], memo[j - 1][k]) + matrix[j][k];
+                } else {
+                    memo[j][k] = min(memo[j - 1][k], memo[j - 1][k - 1], memo[j - 1][k + 1]) + matrix[j][k];
+                }
+            }
+        }
+
+        int res = Integer.MAX_VALUE;
+        for (int i = 0; i < m; i++) {
+            res = Math.min(res, memo[n - 1][i]);
+        }
+        return res;
+    }
+    public static int minNums(int[] nums) {
+        int minVal = Integer.MAX_VALUE;
+        for (Integer num : nums) {
+            minVal = Math.min(minVal, num);
+        }
+        return minVal;
+    }
+
+    public static int min(int a, int b, int c) {
+        return Math.min(a, Math.min(b, c));
+    }
+
+
+    /**
+     * 给你一个整数数组 nums 和一个整数 target 。
+     *
+     * 向数组中的每个整数前添加 '+' 或 '-' ，然后串联起所有整数，可以构造一个 表达式 ：
+     *
+     * 例如，nums = [2, 1] ，可以在 2 之前添加 '+' ，在 1 之前添加 '-' ，然后串联起来得到表达式 "+2-1" 。
+     * 返回可以通过上述方法构造的、运算结果等于 target 的不同 表达式 的数目。
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int findTargetSumWays(int[] nums, int target) {
+        return 0;
+    }
 
 
 
     public static void main(String[] args) {
-        int[] case1 = {10,9,2,5,3,7,101,18};
-        //System.out.println(coinChange(case1, 4));
-        System.out.println(lengthOfLIS(case1));
+        int[] case1 = {2,1,3};
+        int[] case2 = {6,5,4};
+        int[] case3 = {7,8,9};
+        int[][] test = new int[][]{case1, case2, case3};
+        System.out.println(minFallingPathSum(test));
     }
 
 }
