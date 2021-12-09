@@ -25,7 +25,7 @@ public class DynamicProgram {
      * @param word2
      * @return
      */
-    public int minDistance(String word1, String word2) {
+    public int minDistance2(String word1, String word2) {
         int m = word1.length();
         int n = word2.length();
 
@@ -148,7 +148,6 @@ public class DynamicProgram {
         dp[0] = nums[0];
 
         for (int i = 1; i < n; i ++) {
-
             dp[i] = Math.max(dp[i - 1] + nums[i], nums[i]);
         }
 
@@ -164,4 +163,76 @@ public class DynamicProgram {
     }
 
 
+    /**
+     * 给定两个字符串 text1 和 text2，返回这两个字符串的最长 公共子序列 的长度。如果不存在 公共子序列 ，返回 0 。
+     * @param text1
+     * @param text2
+     * @return
+     */
+    public static int longestCommonSubsequence(String text1, String text2) {
+        int m = text1.length();
+        int n = text2.length();
+
+        //dp[i][j] 表示text1[i]和text2[j] 的最长公共子序列长度。
+        int[][] dp = new int[m + 1][n + 1];
+
+        int ans = Integer.MIN_VALUE;
+        for (int i = 1; i <= m; i ++ ) {
+            for (int j = 1; j <= n; j ++) {
+                if (text1.charAt(i - 1) ==  text2.charAt(j - 1)) {
+                    dp[i][j] =  dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j]);
+                }
+                ans = Math.max(ans, dp[i][j]);
+            }
+        }
+
+        return ans ;
+    }
+    public static int minDistance(String word1, String word2) {
+        int m = word1.length(), n = word2.length();
+        // 复用前文计算 lcs 长度的函数
+        int lcs = longestCommonSubsequence(word1, word2);
+        return m - lcs + n - lcs;
+    }
+
+    /**
+     * 给定两个字符串s1, s2，找到使两个字符串相等所需删除字符的ASCII值的最小和。
+     *  这就是求 s1s1 和 s2s2 两个字符串的 LCSLCS (最长公共子序列)。那对于原题要求的所需删除字符的 ASCII 值的最小和，由于 s1s1 和 s2s2 的 ASCII 是固定的，那不就是求 s1s1 和 s2s2 中 ASCII 最大的子序列 吗？
+     *
+     * @param s1
+     * @param s2
+     * @return
+     */
+    public int minimumDeleteSum(String s1, String s2) {
+        int n = s1.length();
+        int m = s2.length();
+        int totalSum = 0;
+        for(int i = 0; i < n; i++){
+            totalSum += s1.charAt(i);
+        }
+        for(int j = 0; j < m; j++){
+            totalSum += s2.charAt(j);
+        }
+
+        int[][] dp = new int[n + 1][m + 1];
+        for (int i = 1; i <= n; i ++) {
+            for (int j = 1; j <= m; j ++) {
+                if (s1.charAt(i - 1) == s2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + (s1.charAt(i - 1)) * 2;
+                } else {
+                    dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+                }
+            }
+        }
+        return totalSum - dp[n][m];
+    }
+
+
+    public static void main(String[] args) {
+        String text1 = "abcde";
+        String text2 = "ace";
+        System.out.println(longestCommonSubsequence(text1, text2));
+    }
 }

@@ -1,6 +1,7 @@
 package com.jamie.algorithm;
 
 /**
+ * 参考：https://segmentfault.com/a/1190000013703649
  * 描述: Twitter的分布式自增ID雪花算法snowflake (Java版)
  * @PackageName: com.jamie.algorithm
  * @ClassName: SnowFlake
