@@ -260,9 +260,81 @@ public class DynamicProgram {
         return dp[0][n -1];
     }
 
+
+    /**
+     * 给你一个 只包含正整数 的 非空 数组 nums 。请你判断是否可以将这个数组分割成两个子集，使得两个子集的元素和相等。
+     * @param nums
+     * @return
+     */
+    public static boolean canPartition(int[] nums) {
+        int sum = 0;
+        int n = nums.length;
+        for (int num : nums) {
+            sum += num;
+        }
+        if (sum % 2 != 0) {
+            return false;
+        }
+        sum = sum/2;
+
+        // dp[i][j] 表示 对于前 i 个物品，当前背包的容量为 j 时，若 x 为 true，则说明可以恰好将背包装满
+        boolean[][] dp = new boolean[n + 1][sum + 1];
+
+        for(int i = 0; i <= n; i ++) {
+            dp[i][0] = true;
+        }
+
+        for (int i = 1; i <= n; i ++ ) {
+            for (int j = 1; j <= sum; j ++) {
+                if (j - nums[i - 1] < 0) {
+                    dp[i][j] = dp[i - 1][j];
+                } else {
+                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - nums[i - 1]];
+                }
+            }
+
+        }
+        return dp[n][sum];
+    }
+
+    /**
+     * 给你一个整数数组 coins 表示不同面额的硬币，另给一个整数 amount 表示总金额。
+     * 请你计算并返回可以凑成总金额的硬币组合数。如果任何硬币组合都无法凑出总金额，返回 0 。
+     * 假设每一种面额的硬币有无限个。
+     *
+     * 题目数据保证结果符合 32 位带符号整数。
+     * @param amount
+     * @param coins
+     * @return
+     */
+    public int change(int amount, int[] coins) {
+        int coinsKind = coins.length;
+
+        // 若只使用coins的前i个硬币的面值，凑出j面额，总共有dp[i][j]
+        int[][] dp = new int[coinsKind + 1][amount + 1];
+
+        for (int i = 0; i <= coinsKind; i ++) {
+            dp[i][0] = 1;
+        }
+
+        for (int i = 1; i <= coinsKind; i ++) {
+            for (int j = 1; j <= amount; j ++) {
+                if ( j - coins[i - 1] >= 0 ) {
+                    dp[i][j] = dp[i - 1][j] + dp[i][ j - coins[i-1] ];
+                } else {
+                    dp[i][j] = dp[i - 1][j];
+                }
+            }
+        }
+
+        return dp[coinsKind][amount];
+    }
+
+
     public static void main(String[] args) {
         String text1 = "bbbab";
         String text2 = "ace";
-        System.out.println(longestPalindromeSubseq(text1));
+        int[] case1 = {1, 5, 11, 5};
+        System.out.println(canPartition(case1));
     }
 }
