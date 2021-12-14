@@ -26,6 +26,7 @@ import java.util.Scanner;
 /**
  * 车辆路径优化问题求解工具Jsprit的简单介绍与入门
  * 参考：https://my.oschina.net/u/4131402/blog/4426657
+ * 参考：https://cloud.tencent.com/developer/article/1507860
  * @PackageName: com.algorithm.tsp.jsprit
  * @ClassName: JspritDemo
  * @Description:
@@ -140,4 +141,5 @@ public class JspritDemo {
         new Plotter(problem, bestSolution).plot("src/main/java/com/algorithm/tsp/jsprit/output/plot.png","Jsprit_example");
         new GraphStreamViewer(problem, bestSolution).labelWith(GraphStreamViewer.Label.ID).setRenderDelay(200).display();
     }
+
 }
