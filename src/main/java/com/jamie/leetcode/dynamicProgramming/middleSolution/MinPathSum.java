@@ -262,7 +262,6 @@ public class MinPathSum {
             return i == m;
         }
         if (i == m) {
-
             if ((n - j) % 2 == 1) {
                 return false;
             }
