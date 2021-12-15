@@ -243,7 +243,65 @@ public class MinPathSum {
         return  memo3[s][k];
     }
 
+    /**
+     * 给你一个字符串 s 和一个字符规律 p，请你来实现一个支持 '.' 和 '*' 的正则表达式匹配。
+     * @param s
+     * @param p
+     * @return
+     */
+    HashMap memo4;
+    public boolean isMatch(String s, String p) {
+        memo4 = new HashMap<String, Boolean>();
+        return dp(s, 0, p, 0);
+    }
 
+    public boolean dp(String s, int i, String p, int j) {
+        int m = s.length(), n = p.length();
+        // base case
+        if (j == n) {
+            return i == m;
+        }
+        if (i == m) {
+
+            if ((n - j) % 2 == 1) {
+                return false;
+            }
+            for ( ; j + 1 < n; j += 2) {
+                if (p.charAt(j + 1) != '*') {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // 记录状态 (i, j)，消除重叠子问题
+        String key = i + "," + j;
+        if (memo4.containsKey(key)) {
+            return (boolean) memo4.get(key);
+        }
+
+        boolean res = false;
+
+        if (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.') {
+            if (j < n - 1 && p.charAt(j + 1) == '*') {
+                // 通配符匹配0 次，或者多次；
+                res = dp(s, i, p, j + 2)
+                        || dp(s, i + 1, p, j);
+            } else {
+                //正常往后走
+                res = dp(s, i + 1, p, j + 1);
+            }
+        } else {
+            if (j < n - 1 && p.charAt(j + 1) == '*') {
+                res = dp(s, i, p, j + 2);
+            } else {
+                res = false;
+            }
+        }
+        // 将当前结果记入备忘录
+        memo4.put(key, res);
+        return res;
+    }
 
     public static void main(String[] args) {
         int[] case1 = new int[]{-2,-3,3};
