@@ -1,5 +1,7 @@
 package com.jamie.leetcode.dynamicProgramming.middleSolution;
 
+import java.util.*;
+
 /**
  * @PackageName: com.jamie.leetcode.dynamicProgramming.middleSolution
  * @ClassName: MinPathSum
@@ -52,21 +54,131 @@ public class MinPathSum {
      * @param dungeon
      * @return
      */
-    public int calculateMinimumHP(int[][] dungeon) {
+    public static int calculateMinimumHP2(int[][] dungeon) {
         int n = dungeon.length;
         int m = dungeon[0].length;
 
-        // dp[i][j] 表示走到第i行j列，需要的初始血量。
+        // dp[i][j] 表示走到第i行j列，需要的最少血量。第一位表示历史最低血量，第二位表示当前血量
         int[][] dp = new int[n][m];
-        return 0;
+
+        for(int i = 0; i < n; i ++ ) {
+            for (int j = 0; j < m; j ++) {
+                if (i == 0 && j == 0) {
+                    continue;
+                }
+                if (i == 0 ) {
+                    if (dungeon[i][j] >= 0) {
+                        dp[0][j] = dp[0][j - 1];
+                    } else {
+                        dp[0][j] = dp[0][j - 1] + dungeon[0][j];
+                    }
+                }
+                if (j == 0) {
+                    if (dungeon[i][j] >= 0) {
+                        dp[i][0] = dp[i - 1][0];
+                    } else {
+                        dp[i][0] = dp[i - 1][0]  + dungeon[i][0];
+                    }
+                }
+                if (j >= 1 && i >= 1) {
+                    if (dungeon[i][j] >= 0) {
+                        Math.max(dp[i][j - 1], dp[i - 1][j]);
+
+                    } else {
+                        dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j]) + dungeon[i][j];
+                    }
+                }
+
+            }
+        }
+        return dp[n - 1][m - 1] * (-1);
     }
 
+    public static int calculateMinimumHP(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        // 备忘录中都初始化为 -1
+        memo = new int[m][n];
+        for (int[] row : memo) {
+            Arrays.fill(row, -1);
+        }
+
+        return dp(grid, 0, 0);
+    }
+
+    // 备忘录，消除重叠子问题
+    public static int[][] memo;
+
+    /* 定义：从 (i, j) 到达右下角，需要的初始血量至少是多少 */
+    public static int dp(int[][] grid, int i, int j) {
+        int m = grid.length;
+        int n = grid[0].length;
+        // base case
+        if (i == m - 1 && j == n - 1) {
+            return grid[i][j] >= 0 ? 1 : -grid[i][j] + 1;
+        }
+        if (i == m || j == n) {
+            return Integer.MAX_VALUE;
+        }
+        // 避免重复计算
+        if (memo[i][j] != -1) {
+            return memo[i][j];
+        }
+        // 状态转移逻辑
+        int res = Math.min(
+                dp(grid, i, j + 1),
+                dp(grid, i + 1, j)
+        ) - grid[i][j];
+        // 骑士的生命值至少为 1
+        memo[i][j] = res <= 0 ? 1 : res;
+
+        return memo[i][j];
+    }
+
+    int[][] nums;
+    public int findRotateSteps(String ring, String key) {
+        Map<Character, List<Integer>> cache = new HashMap<>();
+        for (int i = 0; i < ring.length(); i++) {
+            char c = ring.charAt(i);
+            cache.putIfAbsent(c, new ArrayList<>());
+            cache.get(c).add(i);
+        }
+        int index = 0;
+        nums = new int[ring.length()][key.length()];
+        for (int i = 0; i < nums.length; i++) {
+            Arrays.fill(nums[i], -1);
+        }
+        return minStep(cache, ring.length(), index, 0, key) + key.length();
+    }
+
+    private int minStep(Map<Character, List<Integer>> cache, int ringLength, int index, int salt, String key) {
+
+        if (index == key.length()) {
+            return 0;
+        }
+        if (nums[salt][index] != -1) {
+            return nums[salt][index];
+        }
+        int min = Integer.MAX_VALUE;
+        char c = key.charAt(index);
+        List<Integer> list = cache.get(c);
+        for (int i : list) {
+            int maxValue = Math.max(i, salt);
+            int minValue = Math.min(i, salt);
+            int curStep = Math.min(maxValue - minValue, ringLength - maxValue + minValue);
+            min = Math.min(min, curStep + minStep(cache, ringLength, index + 1, i, key));
+        }
+        nums[salt][index] = min;
+        return min;
+    }
+
+
     public static void main(String[] args) {
-        int[] case1 = new int[]{1,3,1};
-        int[] case2 = new int[]{1,5,1};
-        int[] case3 = new int[]{4,2,1};
+        int[] case1 = new int[]{-2,-3,3};
+        int[] case2 = new int[]{-5,-10,1};
+        int[] case3 = new int[]{10,30,-5};
         int[][] grid = new int[][]{case1, case2, case3};
 
-        System.out.println(minPathSum(grid));
+        System.out.println(calculateMinimumHP(grid));
     }
 }
