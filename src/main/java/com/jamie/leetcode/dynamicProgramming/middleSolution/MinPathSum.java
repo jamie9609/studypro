@@ -302,12 +302,81 @@ public class MinPathSum {
         return res;
     }
 
+
+    /**
+     * 给你 k 枚相同的鸡蛋，并可以使用一栋从第 1 层到第 n 层共有 n 层楼的建筑。
+     * 已知存在楼层 f ，满足 0 <= f <= n ，任何从 高于 f 的楼层落下的鸡蛋都会碎，从 f 楼层或比它低的楼层落下的鸡蛋都不会破。
+     * 每次操作，你可以取一枚没有碎的鸡蛋并把它从任一楼层 x 扔下（满足 1 <= x <= n）。如果鸡蛋碎了，你就不能再次使用它。如果某枚鸡蛋扔下后没有摔碎，则可以在之后的操作中 重复使用 这枚鸡蛋。
+     * 请你计算并返回要确定 f 确切的值 的 最小操作次数 是多少？
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/super-egg-drop
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @param k
+     * @param n
+     * @return
+     */
+    // 数组规模太大，超出时间限制。
+    public static int superEggDrop3(int k, int n) {
+        //dp[i][j] 表示i个鸡蛋，j层楼，至少需要操作的次数
+        int[][] dp = new int[k + 1][n + 1];
+
+        for ( int i = 1; i < k + 1; i ++ ) {
+            dp[i][1] = 1;
+        }
+        for (int j = 1; j < n + 1; j ++) {
+            dp[1][j] = j;
+        }
+        if (n > 1 && k > 1) {
+            for (int i = 2; i < k + 1; i ++ ) {
+                for (int j = 2; j < n + 1; j ++) {
+                    int tmp = Integer.MAX_VALUE;
+                    for (int p = 1; p < j ; p ++ ) {
+                        tmp = Math.min(tmp, Math.max(dp[i - 1][p - 1],dp[i][j - p]) + 1);
+                    }
+                    dp[i][j] = tmp;
+                }
+            }
+        }
+        return dp[k][n];
+    }
+
+    static int[][] memo5 = null;
+
+    public static int superEggDrop(int k, int n) {
+        memo5 = new int[k + 1][n +1];
+        return helper(k, n);
+    }
+
+    public static int helper(int k, int n) {
+        if (k == 1) {
+            return n;
+        }
+        if (n == 0) {
+            return 0;
+        }
+        if (memo5[k][n] > 0) {
+            return memo5[k][n];
+        }
+
+        int tmpValue = Integer.MAX_VALUE;
+        for (int j = 1; j < n + 1; j ++) {
+            tmpValue = Math.min(tmpValue, Math.max(helper(k - 1, j - 1), helper(k, n - j)) + 1);
+        }
+
+        memo5[k][n] = tmpValue;
+        return tmpValue;
+    }
+
+
+    
     public static void main(String[] args) {
-        int[] case1 = new int[]{-2,-3,3};
+        /*int[] case1 = new int[]{-2,-3,3};
         int[] case2 = new int[]{-5,-10,1};
         int[] case3 = new int[]{10,30,-5};
-        int[][] grid = new int[][]{case1, case2, case3};
+        int[][] grid = new int[][]{case1, case2, case3};*/
 
-        System.out.println(calculateMinimumHP(grid));
+        //System.out.println(calculateMinimumHP(grid));
+
+        System.out.println(superEggDrop(1,2));
     }
 }
