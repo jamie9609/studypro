@@ -10,19 +10,6 @@ package com.jamie.leetcode.dynamicProgramming.dp;
 public class StockTrading {
 
     /**
-     * 给定一个整数数组  prices ，它的第 i 个元素  prices[i] 是一支给定的股票在第 i 天的价格。
-     * 设计一个算法来计算你所能获取的最大利润。你最多可以完成 k 笔交易。
-     * 注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
-     * @param k
-     * @param prices
-     * @return
-     */
-    public int maxProfit(int k, int[] prices) {
-        return 0;
-    }
-
-
-    /**
      * 给定一个数组 prices ，它的第  i 个元素  prices[i] 表示一支给定股票第 i 天的价格。
      *
      * 你只能选择 某一天 买入这只股票，并选择在 未来的某一个不同的日子 卖出该股票。设计一个算法来计算你所能获取的最大利润。
@@ -149,8 +136,26 @@ public class StockTrading {
         return dp[n - 1][0];
     }
 
-
-
+    /**
+     * 给定一个整数数组  prices，其中第  i  个元素代表了第  i  天的股票价格 ；整数  fee 代表了交易股票的手续费用。
+     * 你可以无限次地完成交易，但是你每笔交易都需要付手续费。如果你已经购买了一个股票，在卖出它之前你就不能再继续购买股票了。
+     * 返回获得利润的最大值。
+     * 注意：这里的一笔交易指买入持有并卖出股票的整个过程，每笔交易你只需要为支付一次手续费。
+     * @param prices
+     * @param fee
+     * @return
+     */
+    public int maxProfit5(int[] prices, int fee) {
+        int n = prices.length;
+        // dp[i][0]表示在交易的第i天，不持有股票的最大利润；dp[i][1]表示在交易的第i天，持有股票的最大利润
+        int[][] dp = new int[n][2];
+        dp[0][1] = - prices[0];
+        for (int i = 1; i < n; i ++ ) {
+            dp[i][1] = Math.max( dp[i - 1][1], dp[i - 1][0] - prices[i] );
+            dp[i][0] = Math.max( dp[i - 1][0], dp[i - 1][1] + prices[i] - fee);
+        }
+        return dp[n - 1][0];
+    }
 
 
     public static void main(String[] args) {
