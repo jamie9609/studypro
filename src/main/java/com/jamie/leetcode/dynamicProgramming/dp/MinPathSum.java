@@ -1,4 +1,4 @@
-package com.jamie.leetcode.dynamicProgramming.middleSolution;
+package com.jamie.leetcode.dynamicProgramming.dp;
 
 import java.util.*;
 
