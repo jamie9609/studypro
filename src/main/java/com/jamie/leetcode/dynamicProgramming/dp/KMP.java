@@ -53,6 +53,28 @@ public class KMP {
         return -1;
     }
 
+    /**
+     * 时间复杂度O(m * n)的算法，简单。
+     * @param ss
+     * @param pp
+     * @return
+     */
+    public int strStr(String ss, String pp) {
+        int n = ss.length(), m = pp.length();
+        char[] s = ss.toCharArray(), p = pp.toCharArray();
+        // 枚举原串的「发起点」
+        for (int i = 0; i <= n - m; i++) {
+            // 从原串的「发起点」和匹配串的「首位」开始，尝试匹配
+            int a = i, b = 0;
+            while (b < m && s[a] == p[b]) {
+                a++;
+                b++;
+            }
+            // 如果能够完全匹配，返回原串的「发起点」下标
+            if (b == m) return i;
+        }
+        return -1;
+    }
 
     //注意代码中 for 循环的变量初始值，可以这样理解：后者是在 txt 中匹配 pat，前者是在 pat 中匹配 pat[1..end]，
     // 状态 X 总是落后状态 j 一个状态，与 j 具有最长的相同前缀。
