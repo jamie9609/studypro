@@ -15,11 +15,14 @@ import java.util.stream.Collectors;
 public class List2String {
 
     public static void main(String[] args) {
+        System.out.println(System.getProperty("os.arch"));
+        System.out.println(System.getProperty("os.name"));
 
-        Optional<Object> x = Optional.empty();
+
+        /*Optional<Object> x = Optional.empty();
         if(!x.isPresent()) {
             System.out.println("xxxx");
-        }
+        }*/
 
         /*List<Integer> cityList = new ArrayList<>();
         cityList.add(1);

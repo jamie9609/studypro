@@ -1,9 +1,12 @@
 package com.algorithm.tsp.ortools;
 
+import com.google.ortools.Loader;
 import com.google.ortools.constraintsolver.Assignment;
 import com.google.ortools.constraintsolver.FirstSolutionStrategy;
+import com.google.ortools.constraintsolver.RoutingIndexManager;
 import com.google.ortools.constraintsolver.RoutingModel;
 import com.google.ortools.constraintsolver.RoutingSearchParameters;
+import com.google.ortools.constraintsolver.main;
 
 import java.util.logging.Logger;
 
@@ -39,7 +42,7 @@ public class OrtoolsDemo {
     }
 
     /// @brief Print the solution.
-    /*static void printSolution(
+    static void printSolution(
             RoutingModel routing, RoutingIndexManager manager, Assignment solution) {
         // Solution cost.
         logger.info("Objective: " + solution.objectiveValue() + "miles");
@@ -61,6 +64,7 @@ public class OrtoolsDemo {
 
     public static void main(String[] args) throws Exception {
         Loader.loadNativeLibraries();
+        //System.loadLibrary("jniortools");
         // Instantiate the data problem.
         final DataModel data = new DataModel();
 
@@ -87,7 +91,7 @@ public class OrtoolsDemo {
         RoutingSearchParameters searchParameters =
                 main.defaultRoutingSearchParameters()
                         .toBuilder()
-                        .setFirstSolutionStrategy(FirstSolutionStrategy.Value.PATH_CHEAPEST_ARC)
+                        .setFirstSolutionStrategy(FirstSolutionStrategy.Value.AUTOMATIC)
                         .build();
 
         // Solve the problem.
@@ -95,5 +99,5 @@ public class OrtoolsDemo {
 
         // Print solution on console.
         printSolution(routing, manager, solution);
-    }*/
+    }
 }

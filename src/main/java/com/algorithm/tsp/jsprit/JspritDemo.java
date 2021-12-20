@@ -1,6 +1,5 @@
 package com.algorithm.tsp.jsprit;
-import com.graphhopper.jsprit.analysis.toolbox.GraphStreamViewer;
-import com.graphhopper.jsprit.analysis.toolbox.Plotter;
+
 import com.graphhopper.jsprit.core.algorithm.VehicleRoutingAlgorithm;
 import com.graphhopper.jsprit.core.algorithm.box.Jsprit;
 import com.graphhopper.jsprit.core.problem.Location;
@@ -13,7 +12,6 @@ import com.graphhopper.jsprit.core.problem.vehicle.VehicleType;
 import com.graphhopper.jsprit.core.problem.vehicle.VehicleTypeImpl;
 import com.graphhopper.jsprit.core.reporting.SolutionPrinter;
 import com.graphhopper.jsprit.core.util.Solutions;
-
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -69,7 +67,11 @@ public class JspritDemo {
         }
         String path = "src/main/java/com/algorithm/tsp/jsprit/examples.txt";
         readData(path);
-        buildProblem();
+        long startTime = System.currentTimeMillis();
+        for (int i = 0; i < 100; i ++) {
+            buildProblem();
+        }
+        System.out.println("总计算耗时：" +  (System.currentTimeMillis() - startTime)/1000 + "s");
     }
 
     /**
@@ -138,8 +140,8 @@ public class JspritDemo {
         SolutionPrinter.print(problem, bestSolution, SolutionPrinter.Print.VERBOSE);
 
         //将求解的结果进行可视化
-        new Plotter(problem, bestSolution).plot("src/main/java/com/algorithm/tsp/jsprit/output/plot.png","Jsprit_example");
-        new GraphStreamViewer(problem, bestSolution).labelWith(GraphStreamViewer.Label.ID).setRenderDelay(200).display();
+        //new Plotter(problem, bestSolution).plot("src/main/java/com/algorithm/tsp/jsprit/output/plot.png","Jsprit_example");
+        //new GraphStreamViewer(problem, bestSolution).labelWith(GraphStreamViewer.Label.ID).setRenderDelay(200).display();
     }
 
 }
