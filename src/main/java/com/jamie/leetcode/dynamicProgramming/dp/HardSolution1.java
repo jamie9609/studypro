@@ -1,5 +1,8 @@
 package com.jamie.leetcode.dynamicProgramming.dp;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 /**
  * @PackageName: com.jamie.leetcode.dynamicProgramming.middleSolution
  * @ClassName: EggDrop
@@ -178,11 +181,78 @@ public class HardSolution1 {
     }
 
 
+    /**
+     * 无重叠区间
+     * 给定一个区间的集合，找到需要移除区间的最小数量，使剩余区间互不重叠。
+     * @param intervals
+     * @return
+     */
+    public int eraseOverlapIntervals(int[][] intervals) {
+        if (intervals.length == 0) {
+            return 0;
+        }
+        Arrays.sort(intervals, (int[] a, int[] b) -> {
+            return a[1] - b[1];
+        });
 
+
+        int count = 1;
+        int x_end = intervals[0][1];
+        for (int[] item : intervals) {
+            int start = item[0];
+            if (start >= x_end) {
+                count ++;
+                x_end = item[1];
+            }
+        }
+        return intervals.length - count;
+    }
+
+    /**
+     * 用最少数量的箭引爆气球
+     * @param points
+     * @return
+     */
+    public static int findMinArrowShots(int[][] points) {
+        if (points.length == 0) {
+            return 0;
+        }
+
+        Arrays.sort(points, (int[] a, int[] b) -> {
+            return a[1] - b[1];
+        });
+
+        Arrays.sort(points, new Comparator<int[]>() {
+                    @Override
+                    public int compare(int[] o1, int[] o2) {
+                        if (o1[1] > o2[1]) {
+                            return 1;
+                        } else if (o1[1] < o2[1]) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                    }
+                }
+        );
+
+        int count = 1;
+        int x_end = points[0][1];
+        for (int[] item : points) {
+            int start = item[0];
+            if (start > x_end) {
+                count ++;
+                x_end = item[1];
+            }
+        }
+        return count;
+    }
 
     public static void main(String[] args) {
-        int[] case2 = {3, 1, 5, 8};
-        System.out.println(maxCoins(case2));
+        int[] case1 = {-2147483646,-2147483645};
+        int[] case2 = {2147483646,2147483647};
+        int[][] test = new int[][]{case1, case2};
+        System.out.println(findMinArrowShots(test));
     }
 
 }
