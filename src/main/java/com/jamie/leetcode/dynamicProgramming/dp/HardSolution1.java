@@ -283,13 +283,131 @@ public class HardSolution1 {
         return res ;
     }
 
+    /**
+     * 贪心算法之视频剪辑
+     * @param clips
+     * @param time
+     * @return
+     */
+    public int videoStitching(int[][] clips, int time) {
+        if (time == 0) {
+            return 0;
+        }
+
+        Arrays.sort(clips, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                if (o1[0] == o2[0]) {
+                    return o2[1] - o1[1];
+                } else {
+                    return o1[0] - o2[0];
+                }
+            }
+        });
+
+        int n = clips.length;
+        int res = 0;
+        int curEnd = 0, nextEnd = 0;
+        int i = 0;
+        while (i < n && clips[i][0] <= curEnd) {
+            // 在第 res 个视频的区间内贪心选择下一个视频
+            while (i < n && clips[i][0] <= curEnd) {
+                nextEnd = Math.max(nextEnd, clips[i][1]);
+                i++;
+            }
+            // 找到下一个视频，更新 curEnd
+            res++;
+            curEnd = nextEnd;
+            if (curEnd >= time) {
+                return res;
+            }
+        }
+        return -1;
+    }
+
+
+    /**
+     * 给定一个非负整数数组nums ，你最初位于数组的 第一个下标 。
+     * 数组中的每个元素代表你在该位置可以跳跃的最大长度。
+     * 判断你是否能够到达最后一个下标。
+     * @param nums
+     * @return
+     */
+    public boolean canJump(int[] nums) {
+        if (nums.length == 0 || nums.length ==1) {
+            return true;
+        }
+        int maxLength = 0;
+
+        for (int i = 0; i < nums.length ; i ++) {
+            if (maxLength >= i ) {
+                maxLength = Math.max(maxLength, i + nums[i]);
+            }
+        }
+        return maxLength >= nums.length - 1;
+    }
+
+    /**
+     * 给你一个非负整数数组 nums ，你最初位于数组的第一个位置。
+     *
+     * 数组中的每个元素代表你在该位置可以跳跃的最大长度。
+     *
+     * 你的目标是使用最少的跳跃次数到达数组的最后一个位置。
+     *
+     * 假设你总是可以到达数组的最后一个位置。
+     * @param nums
+     * @return
+     */
+    public static int jump(int[] nums) {
+        int n = nums.length;
+        int end = 0, farthest = 0;
+        int jumps = 0;
+        for (int i = 0; i < n - 1; i++) {
+            farthest = Math.max(nums[i] + i, farthest);
+            if (end == i) {
+                jumps++;
+                end = farthest;
+            }
+        }
+        return jumps;
+    }
+
+    /**
+     * 加油站问题 https://leetcode-cn.com/problems/gas-station/
+     * @param gas
+     * @param cost
+     * @return
+     */
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int n = gas.length;
+        // 相当于图像中的坐标点和最低点
+        int sum = 0, minSum = 0;
+        int start = 0;
+        for (int i = 0; i < n; i++) {
+            sum += gas[i] - cost[i];
+            if (sum < minSum) {
+                // 经过第 i 个站点后，使 sum 到达新低
+                // 所以站点 i + 1 就是最低点（起点）
+                start = i + 1;
+                minSum = sum;
+            }
+        }
+        if (sum < 0) {
+            // 总油量小于总的消耗，无解
+            return -1;
+        }
+        return start == n ? 0 : start;
+    }
 
 
     public static void main(String[] args) {
         int[] case1 = {-2147483646,-2147483645};
         int[] case2 = {2147483646,2147483647};
+        int[] case3 = {2,3,1,1,4};
         int[][] test = new int[][]{case1, case2};
-        System.out.println(findMinArrowShots(test));
+        //System.out.println(findMinArrowShots(test));
+        //System.out.println(canJump(case3));
+        System.out.println(jump(case3));
     }
 
 }
