@@ -1,9 +1,8 @@
 package com.jamie.leetcode.bitOperation;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
-import java.util.stream.Collectors;
+import java.util.Random;
 
 /**
  * @PackageName: com.jamie.leetcode.bitOperation
@@ -215,4 +214,35 @@ public class EasySolution {
         return new int[]{dup, missing};
     }
 
+
+    public class ListNode {
+        int val;
+        ListNode next;
+        ListNode() {}
+        ListNode(int val) { this.val = val; }
+        ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+    }
+
+
+    ListNode head;
+    public void Solution(ListNode head) {
+        this.head = head;
+    }
+
+    public int getRandom() {
+        Random r = new Random();
+        int i = 0, res = 0;
+        ListNode p = head;
+        // while 循环遍历链表
+        while (p != null) {
+            i++;
+            // 生成一个 [0, i) 之间的整数
+            // 这个整数等于 0 的概率就是 1/i
+            if (0 == r.nextInt(i)) {
+                res = p.val;
+            }
+            p = p.next;
+        }
+        return res;
+    }
 }
