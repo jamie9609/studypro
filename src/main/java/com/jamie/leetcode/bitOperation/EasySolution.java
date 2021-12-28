@@ -1,5 +1,10 @@
 package com.jamie.leetcode.bitOperation;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.stream.Collectors;
+
 /**
  * @PackageName: com.jamie.leetcode.bitOperation
  * @ClassName: easySolution
@@ -101,6 +106,73 @@ public class EasySolution {
             flag *= 5;
         }
         return res;
+    }
+
+    /**
+     * 统计所有小于非负整数 n 的质数的数量。
+     * @param n
+     * @return
+     */
+    public int countPrimes(int n) {
+        boolean[] isPrime = new boolean[n];
+        Arrays.fill(isPrime, true);
+
+        for (int i = 2; i * i < n; i++) {
+            // i 的倍数不可能是素数了
+            if (isPrime[i]) {
+                for (int j = 2 * i; j < n; j += i)
+                    isPrime[j] = false;
+            }
+        }
+        int count = 0;
+        for (int i = 2; i < n; i++) {
+            if (isPrime[i]) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public boolean isPrime(int n) {
+        for (int i = 2; i < n ; i ++) {
+            if (n % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    int base = 1337;
+    public int superPow(int a, int[] b) {
+        if (b.length == 0) {
+            return 1;
+        }
+        LinkedList<Integer> nums = new LinkedList<>();
+        for (int i = 0 ; i < b.length; i ++) {
+            nums.addFirst(b[i]);
+        }
+        return helper2(a, nums);
+    }
+    // 计算 a 的 k 次方然后与 base 求模的结果
+    public int mypow(int a, int k) {
+        a %= base;
+        int res = 1;
+
+        for (int i = 0; i < k; i ++) {
+            res *= a;
+            res %= base;
+        }
+        return res;
+    }
+
+    public int helper2(int a, LinkedList<Integer> nums) {
+        if (nums.isEmpty()) {
+            return 1;
+        }
+        Integer first = nums.removeFirst();
+        int part1 = mypow(a, first);
+        int part2 = mypow(helper2(a, nums), 10);
+        return (part1 * part2) % base;
     }
 
 
