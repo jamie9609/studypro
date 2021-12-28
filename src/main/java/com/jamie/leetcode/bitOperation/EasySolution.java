@@ -229,8 +229,12 @@ public class EasySolution {
         this.head = head;
     }
 
+    /**
+     * 给定一个单链表，随机选择链表的一个节点，并返回相应的节点值。保证每个节点被选的概率一样。
+     * @return
+     */
     public int getRandom() {
-        Random r = new Random();
+        Random random = new Random();
         int i = 0, res = 0;
         ListNode p = head;
         // while 循环遍历链表
@@ -238,8 +242,34 @@ public class EasySolution {
             i++;
             // 生成一个 [0, i) 之间的整数
             // 这个整数等于 0 的概率就是 1/i
-            if (0 == r.nextInt(i)) {
+            if (0 == random.nextInt(i)) {
                 res = p.val;
+            }
+            p = p.next;
+        }
+        return res;
+    }
+
+    /**
+     * 返回链表中 k 个随机节点的值
+     */
+    public int[] getRandom(ListNode head, int k) {
+        Random r = new Random();
+        int[] res = new int[k];
+        ListNode p = head;
+
+        for (int j = 0; j < k && p != null; j ++) {
+            res[j] = p.val;
+            p = p.next;
+        }
+
+        int i = k;
+
+        while (p != null) {
+            int j = r.nextInt(++i);
+            // 这个整数小于 k 的概率就是 k/i
+            if (j < k) {
+                res[j] = p.val;
             }
             p = p.next;
         }
