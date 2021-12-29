@@ -4,5 +4,10 @@
       "name": "mapreduce.framework.name",
       "type": "java.lang.String",
       "description": "Description for mapreduce.framework.name."
-  }
-] }
+    },
+    {
+      "name": "swagger.title",
+      "type": "java.lang.String",
+      "description": "Description for swagger.title."
+    }
+  ] }

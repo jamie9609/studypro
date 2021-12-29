@@ -25,6 +25,6 @@ public class LogAdvice {
     @Before("logAdvicePointcut()")
     public void logAdvice(){
         // 这里只是一个示例，你可以写任何处理逻辑
-        System.out.println("get请求的advice触发了");
+        System.out.println("get请求的advice触发了(aop)");
     }
 }
