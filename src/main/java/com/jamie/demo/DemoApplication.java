@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 
-@SpringBootApplication(exclude= {DataSourceAutoConfiguration.class}, scanBasePackages = { "com.jamie", "com.controller" })
+@SpringBootApplication(exclude= {DataSourceAutoConfiguration.class}, scanBasePackages = { "com.jamie", "com" })
 /**
  * 如果不加@ServletComponentScan注解则会报404即找不到页面。
  * 如果Application类和Servlet类不在同一包下，则@ServletComponentScan需要添加相应的路径。
