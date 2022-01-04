@@ -2,6 +2,7 @@ package com.controller;
 
 import com.controller.dto.User;
 import com.dal.mongodb.TestMongo1;
+import com.dal.mongodb.TestMongo2;
 import com.dal.mongodb.UserDO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -30,6 +31,9 @@ public class swaggerDemo {
     @Resource
     private TestMongo1 testMongo1;
 
+    @Resource
+    private TestMongo2 testMongo2;
+
     /**
      * 一个路径参数的接口示例
      */
@@ -51,7 +55,8 @@ public class swaggerDemo {
     public UserDO createMongoUser(@PathVariable(name = "id") String id) {
         UserDO user = new UserDO();
         user.setId(id);
-        testMongo1.createUser(id);
+        //testMongo1.createUser(id);
+        testMongo2.createUser2(id);
         return user;
     }
 }

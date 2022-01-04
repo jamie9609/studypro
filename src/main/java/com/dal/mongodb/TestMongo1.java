@@ -139,8 +139,7 @@ public class TestMongo1 {
     public void delete() {
 
         //构造条件 根据id删除相应的文档
-        Query query =
-                new Query(Criteria.where("_id").is("5ffbfa2ac290f356edf9b5aa"));
+        Query query = new Query(Criteria.where("_id").is("5ffbfa2ac290f356edf9b5aa"));
         DeleteResult result = mongoTemplate.remove(query, UserDO.class);
         long count = result.getDeletedCount();
         System.out.println(count);
