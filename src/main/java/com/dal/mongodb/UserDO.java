@@ -24,6 +24,8 @@ public class UserDO {
     private String id;
     private String username;
     private Integer age;
+    private String school;
     private String password;
     private String address;
+
 }

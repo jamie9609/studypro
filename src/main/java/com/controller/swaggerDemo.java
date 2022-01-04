@@ -55,8 +55,8 @@ public class swaggerDemo {
     public UserDO createMongoUser(@PathVariable(name = "id") String id) {
         UserDO user = new UserDO();
         user.setId(id);
-        //testMongo1.createUser(id);
-        testMongo2.createUser2(id);
+        testMongo1.createUser(id);
+        //testMongo2.createUser2(id);
         return user;
     }
 }

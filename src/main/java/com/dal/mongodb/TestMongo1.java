@@ -36,6 +36,7 @@ public class TestMongo1 {
         user.setId(id);
         user.setAge(20);
         user.setUsername("test");
+        user.setSchool("university");
         user.setAddress("address1");
         user.setPassword("password1");
         UserDO user1 = mongoTemplate.insert(user);
