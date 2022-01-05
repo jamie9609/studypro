@@ -1,8 +1,6 @@
 package com.jamie.leetcode.classicInterviewQuestions;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @PackageName: com.jamie.leetcode.classicInterviewQuestions
@@ -103,8 +101,104 @@ public class spliteNums {
         }
     }
 
+    /**
+     * 给定两个以字符串形式表示的非负整数 num1 和 num2，返回 num1 和 num2 的乘积，它们的乘积也表示为字符串形式。
+     * @param n1
+     * @param n2
+     * @return
+     */
+    public static String multiply(String n1, String n2) {
+        int n = n1.length();
+        int m = n2.length();
+        int[] res = new int[n + m];
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = m - 1; j >= 0; j--) {
+                int a = n1.charAt(i) - '0';
+                int b = n2.charAt(j) - '0';
+                int r = a * b;
+                r += res[i + j + 1];
+                res[i + j + 1] = r % 10;
+                res[i + j] += r / 10;
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n + m; i++) {
+            if (sb.length() == 0 && res[i] == 0) {
+                continue;
+            }
+            sb.append(res[i]);
+        }
+        return sb.length() == 0 ? "0" : sb.toString();
+    }
+
+
+    /**
+     * 基本计算器。给你一个字符串表达式 s ，请你实现一个基本计算器来计算并返回它的值。
+     * @param s
+     * @return
+     */
+    char LEFT = '(';
+    char RIGHT = ')';
+
+    public int calculate(String s) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+
+        Deque<Character> q = new ArrayDeque<>();
+
+        for (char c : s.toCharArray())
+            if (c != ' ') {
+                q.offer(c);
+            }
+        q.offer(' ');   // 确保最后一个 preNum 能被计算
+        return helper(q);
+    }
+    private int helper(Deque<Character> q) {
+        int res = 0;
+        int preNum = 0;
+        int curNum = 0;
+        char preOp = '+';
+
+        while (!q.isEmpty()) {
+            char c = q.poll();
+            if (Character.isDigit(c))  // 数字，比如 235, 568
+                curNum = curNum * 10 + c - '0';
+            else if (c == LEFT)       // 左括号，直接跟递归要结果
+                curNum = helper(q);
+            else {                    // 其他符号： + - * / )
+                switch(preOp) {
+                    case '+':
+                        res += preNum;
+                        preNum = curNum;
+                        break;
+                    case '-':
+                        res += preNum;
+                        preNum = -curNum;
+                        break;
+                    case '*':
+                        preNum = preNum * curNum;
+                        break;
+                    case '/':
+                        preNum = preNum / curNum;
+                        break;
+                }
+                preOp = c;
+                curNum = 0;
+                if (c == RIGHT) {
+                    break;
+                }
+            }
+        }
+
+        res += preNum;  // 别忘了等待本次计算的 preNum
+        return res;
+    }
+
+
     public static void main(String[] args) {
         int[] case1 = {3, 2, 4, 1};
-        System.out.println(pancakeSort(case1));
+        //System.out.println(pancakeSort(case1));
+        System.out.println(multiply("123","456"));
     }
 }
