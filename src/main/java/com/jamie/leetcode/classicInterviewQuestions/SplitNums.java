@@ -9,9 +9,7 @@ import java.util.*;
  * @Author: jamiezhangming
  * @Date: 2022/1/5 2:31 下午
  */
-public class spliteNums {
-
-
+public class SplitNums {
     /**
      * 给你一个按升序排序的整数数组 num（可能包含重复数字），请你将它们分割成一个或多个长度至少为 3 的子序列，其中每个子序列都由连续整数组成。
      * @param nums
