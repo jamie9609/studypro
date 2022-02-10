@@ -7,6 +7,6 @@ package com.jamie.javastudy.designPattern.proxy.dynamicProxy;
  * @Author: jamiezhangming
  * @Date: 2021/11/22 1:15 下午
  */
-public interface ITeacherDao {
+public interface ITeacher2Dao {
     void teach();
 }

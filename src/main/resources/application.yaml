@@ -4,3 +4,5 @@ server:
 spring:
   profiles:
     active: dev #启动开发环境
+mybatis:
+  mapperLocations: classpath*:com/jamie/javastudy/springBootAnnotationStudy/mapperStudy/*.xml

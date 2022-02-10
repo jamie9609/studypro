@@ -10,7 +10,7 @@ package com.jamie.javastudy.designPattern.proxy.dynamicProxy;
 public class Client {
     public static void main(String[] args) {
         TeacherDao target = new TeacherDao();
-        ITeacherDao proxyInstance = (ITeacherDao)new ProxyFactory(target).getProxyInstance();
+        ITeacher2Dao proxyInstance = (ITeacher2Dao)new ProxyFactory(target).getProxyInstance();
         System.out.println("proxy" + proxyInstance.getClass());
         proxyInstance.teach();
     }

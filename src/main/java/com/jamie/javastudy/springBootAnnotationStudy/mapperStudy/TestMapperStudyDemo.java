@@ -1,9 +1,7 @@
 package com.jamie.javastudy.springBootAnnotationStudy.mapperStudy;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import javax.annotation.Resource;
 
 
 /**
@@ -13,11 +11,11 @@ import org.springframework.stereotype.Service;
  * @Author: jamiezhangming
  * @Date: 2022/2/9 5:16 下午
  */
-@Component
-public class TestDemo {
+@Service
+public class TestMapperStudyDemo {
 
-    @Autowired
-     MapperUtilTest mapperUtilTest;
+    @Resource
+    MapperUtilTest mapperUtilTest;
 
     public void testUtil () {
         AppleDO appleDO = new AppleDO("富士", "red", 11, 10001);

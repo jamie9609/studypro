@@ -7,7 +7,7 @@ package com.jamie.javastudy.designPattern.proxy.dynamicProxy;
  * @Author: jamiezhangming
  * @Date: 2021/11/22 1:16 下午
  */
-public class TeacherDao implements ITeacherDao{
+public class TeacherDao implements ITeacher2Dao {
     @Override
     public void teach() {
         System.out.println("老师正在授课中，，");
