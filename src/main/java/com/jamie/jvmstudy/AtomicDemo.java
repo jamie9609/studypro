@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class AtomicDemo {
 
-    //static AtomicInteger count =  new AtomicInteger();
+    static AtomicInteger count2 =  new AtomicInteger();
 
     volatile static int count = 0;
 
@@ -31,6 +31,11 @@ public class AtomicDemo {
 
 
     public static void main(String[] args) throws InterruptedException {
+        count2.incrementAndGet();
+
+        System.out.println(count2.get());
+
+
         long starTime = System.currentTimeMillis();
         int threadSize = 100;
         CountDownLatch countDownLatch = new CountDownLatch(threadSize);
