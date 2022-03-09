@@ -11,12 +11,8 @@ import java.util.Arrays;
  */
 public class QuickSort {
 
-    private static int min;
-    private static int max;
     public static void main(String[] args) {
-        int[] testArr = new int[]{-99,120,10,3,22,9,9,22,1,33,-2,100,39,1};
-        min = 0;
-        max = testArr.length - 1;
+        int[] testArr = new int[]{1,2,0};
         quickSort(testArr, 0, testArr.length - 1);
         System.out.println(Arrays.toString(testArr));
     }
@@ -27,7 +23,7 @@ public class QuickSort {
         if (left >= right) {
             return;
         }
-        if (left < min || right > max) {
+        if (left < 0 || right > arr.length - 1) {
             return;
         }
         int tmp = arr[left];
@@ -58,4 +54,20 @@ public class QuickSort {
 
 
 
+    public int firstMissingPositive(int[] nums) {
+        int res = -1;
+        quickSort(nums, 0, nums.length - 1);
+        int count = 1;
+        for (int num : nums) {
+            if (num <= 0) {
+                continue;
+            }
+            if (num == count) {
+                count++;
+                continue;
+            }
+            res = count;
+        }
+        return res;
+    }
 }
