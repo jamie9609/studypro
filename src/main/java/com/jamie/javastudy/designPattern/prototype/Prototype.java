@@ -7,9 +7,9 @@ package com.jamie.javastudy.designPattern.prototype;
  * @Author: jamiezhangming
  * @Date: 2021/11/21 1:04 下午
  */
-public class prototype {
+public class Prototype {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CloneNotSupportedException {
         Sheep sheep = new Sheep("zhangsan", "red", 10, "china");
         sheep.setFriend(new Sheep("lisi", "white", 12, "usa"));
 
@@ -24,6 +24,12 @@ public class prototype {
         System.out.println(sheep1.getAddress() == sheep2.getAddress());
 
         System.out.println(sheep1.getAddress().equals(sheep2.getAddress()));
+
+        Realizetype realizetype = new Realizetype();
+        Realizetype realizetype2 = realizetype.clone();
+
+        System.out.println("realizetype == realizetype2 ? " + (realizetype == realizetype2));
+
     }
 
 }
