@@ -10,11 +10,12 @@ package com.jamie.javastudy.designPattern.builder;
 public class Client {
 
     public static void main(String[] args) {
-        CommonHouse commonHouse = new CommonHouse();
-        commonHouse.build();
 
-        //用到了建造者模式
-        StringBuilder stringBuilder = new StringBuilder("hello" + "world");
-        System.out.println(stringBuilder);
+        CommonHouseBuilder builder = new CommonHouseBuilder();
+        Director director = new Director(builder);
+        director.buildHouseA();
+        System.out.println("------------------");
+        director.buildHouseB();
+
     }
 }

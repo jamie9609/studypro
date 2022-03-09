@@ -7,7 +7,7 @@ package com.jamie.javastudy.designPattern.builder;
  * @Author: jamiezhangming
  * @Date: 2021/11/21 2:36 下午
  */
-public abstract class AbstractHouse {
+public abstract class AbstractHouseBuilder {
 
     //打地基
     public abstract void buildBasic();
@@ -15,10 +15,4 @@ public abstract class AbstractHouse {
     public abstract void buildWall();
     //封顶
     public abstract void roofed();
-
-    public void build() {
-        buildBasic();
-        buildWall();
-        roofed();
-    }
 }
