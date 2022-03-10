@@ -11,7 +11,7 @@ import java.util.Comparator;
  * @Date: 2021/11/23 5:18 下午
  */
 public class Client {
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
 
         Integer[] data = {1, 3, 5, 2, 30, 32, 2};
 
@@ -27,8 +27,6 @@ public class Client {
         };
 
         Arrays.sort(data, comparator);
-
-
         Arrays.sort(data, (a1, a2) -> {
             if (a1.compareTo(a2) > 0) {
                 return 1;
@@ -37,5 +35,12 @@ public class Client {
             }
         });
         System.out.println(Arrays.asList(data));
+    }
+    
+    public static void main(String[] args) {
+        Context context = new Context(new ConcreteStrategyA());
+        context.contextInterface();
+        context = new Context(new ConcreteStrategyB());
+        context.contextInterface();
     }
 }
