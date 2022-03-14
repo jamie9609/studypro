@@ -31,4 +31,19 @@ public class TwoSum {
 
         return new int[] {-1, -1};
     }
+
+    public int[] twoSum2(int[] nums, int target) {
+        HashMap<Integer, Integer> targetMap = new HashMap<>();
+        for (int i = 0; i < nums.length; i ++) {
+            targetMap.put(nums[i], i);
+        }
+
+        for (int i = 0; i < nums.length; i ++) {
+            int other = target - nums[i];
+            if (targetMap.containsKey(other) && targetMap.get(other) != i) {
+                return new int[]{i, targetMap.get(nums[i])};
+            }
+        }
+        return new int[]{-1, -1};
+    }
 }

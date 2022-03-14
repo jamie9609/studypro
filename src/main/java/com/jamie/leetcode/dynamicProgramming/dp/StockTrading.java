@@ -29,6 +29,20 @@ public class StockTrading {
         return dp[n - 1][0];
     }
 
+    public static int maxProfitDemo2(int[] prices) {
+        int n = prices.length;
+        // dp[i][0]表示在交易的第i天，不持有股票的最大利润；dp[i][1]表示在交易的第i天，持有股票的最大利润
+        int[][] dp = new int[n][2];
+        dp[0][0] = 0;
+        dp[0][1] = -prices[0];
+
+        for (int i = 1; i < n; i ++) {
+            dp[i][0] = Math.max(dp[i - 1][0] , dp[i - 1][1] + prices[i]);
+            dp[i][1] = Math.max(dp[i - 1][1] , - prices[i]);
+        }
+        return dp[n - 1][0];
+    }
+
 
     /**
      * 给定一个数组 prices ，其中  prices[i] 是一支给定股票第 i 天的价格。
@@ -77,17 +91,35 @@ public class StockTrading {
     }
 
 
+    public static int maxProfitDemo3(int[] prices) {
+        int n = prices.length;
+        int maxCount = 2;
+        // dp[i][k][0]表示在交易的第i天，不持有股票的最大利润；dp[i][k][1]表示在交易的第i天，持有股票的最大利润
+        int[][][] dp = new int[n][3][2];
+        for (int i = 0; i < n; i ++ ) {
+            for (int k = maxCount; k >= 1; k--) {
+                if (i == 0) {
+                    dp[i][k][0] = 0;
+                    dp[i][k][1] = -prices[i];
+                    continue;
+                }
+                dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i]);
+                dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i]);
+            }
+        }
+        return dp[n - 1][2][0];
+    }
+
+
     /**
      * 给定一个整数数组  prices ，它的第 i 个元素  prices[i] 是一支给定的股票在第 i 天的价格。
-     *
      * 设计一个算法来计算你所能获取的最大利润。你最多可以完成 k 笔交易。
-     *
      * 注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
      * @param k
      * @param prices
      * @return
      */
-    public int maxProfit4(int k, int[] prices) {
+    public static int maxProfit4(int k, int[] prices) {
         if (prices.length == 0) {
             return 0;
         }
@@ -109,6 +141,28 @@ public class StockTrading {
         return dp[n - 1][maxK][0];
     }
 
+    public static int maxProfitDemo4(int k, int[] prices) {
+        if ( prices.length == 0) {
+            return 0;
+        }
+        int maxInt = k;
+        int n = prices.length;
+        int[][][] dp = new int[n][maxInt + 1][2];
+
+        for (int i = 0; i < n; i ++ ) {
+            for (int x = maxInt; x >=1; x --) {
+                if (i == 0) {
+                    dp[i][x][0] = 0;
+                    dp[i][x][1] = -prices[i];
+                    continue;
+                }
+                dp[i][x][1] =  Math.max(dp[i - 1][x][1], dp[i - 1][x - 1][0] - prices[i]);
+                dp[i][x][0] =  Math.max(dp[i - 1][x][0], dp[i - 1][x ][1] + prices[i]);
+            }
+        }
+        return dp[n - 1][maxInt][0];
+
+    }
 
     /**
      * 给定一个整数数组，其中第  i  个元素代表了第  i  天的股票价格 。  
@@ -160,6 +214,10 @@ public class StockTrading {
 
     public static void main(String[] args) {
         int[] case1 = {7, 1, 5, 3, 6, 4};
-        System.out.println(maxProfit(case1));
+        //System.out.println(maxProfit(case1));
+        //System.out.println(maxProfitDemo2(case1));
+        System.out.println(maxProfitDemo3(case1));
+        System.out.println(maxProfit4(2, case1));
+        System.out.println(maxProfitDemo4(2, case1));
     }
 }

@@ -49,5 +49,12 @@ public class TestLamdaCase {
 
         System.out.println("testHash2" + JSON.toJSONString(testHash2));
         System.out.println("testHash" + JSON.toJSONString(testHash));
+
+
+        int[][] ints = new int[3][2];
+        for (int i = 0; i < ints.length; i ++) {
+            System.out.println(ints[i][0]);
+            System.out.println(ints[i][1]);
+        }
     }
 }
