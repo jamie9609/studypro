@@ -15,10 +15,9 @@ public class Client {
     public static void main(String[] args) {
         List<Object> testCase = new ArrayList<>();
         testCase.add("jack");
-        Iterator it = testCase.iterator();
-        while (it.hasNext()) {
-            System.out.println(it.next());
+        Iterator iterator = testCase.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
         }
-
     }
 }
