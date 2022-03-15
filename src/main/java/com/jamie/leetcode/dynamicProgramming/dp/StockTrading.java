@@ -174,7 +174,7 @@ public class StockTrading {
      * @param prices
      * @return
      */
-    public int maxProfit4(int[] prices) {
+    public static int maxProfit4(int[] prices) {
         int n = prices.length;
         // dp[i][0]表示在交易的第i天，不持有股票的最大利润；dp[i][1]表示在交易的第i天，持有股票的最大利润
         int[][] dp = new int[n][2];
@@ -185,6 +185,21 @@ public class StockTrading {
                 dp[i][1] = Math.max( dp[i - 1][1], dp[i - 2][0] - prices[i] );
             } else {
                 dp[i][1] = Math.max( dp[i - 1][1], - prices[i] );
+            }
+        }
+        return dp[n - 1][0];
+    }
+
+    public static int maxProfitDemo4(int[] prices) {
+        int n = prices.length;
+        int[][] dp = new int[n][2];
+        dp[0][1] = -prices[0];
+        for (int i = 0; i < n; i ++) {
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+            if (i > 2) {
+                dp[i][1] = Math.max(dp[i - 1][1], dp[i - 2][0] - prices[1]);
+            } else {
+                dp[i][1] = Math.max(dp[i - 1][1],- prices[1] );
             }
         }
         return dp[n - 1][0];
