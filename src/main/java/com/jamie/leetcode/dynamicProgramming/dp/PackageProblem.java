@@ -186,7 +186,43 @@ public class PackageProblem {
         return false;
     }
 
+    /**
+     *给你一个按升序排序的整数数组 num（可能包含重复数字），请你将它们分割成一个或多个长度至少为 3 的子序列，其中每个子序列都由连续整数组成。
+     * 如果可以完成上述分割，则返回 true ；否则，返回 false 。
+     * 链接：https://leetcode-cn.com/problems/split-array-into-consecutive-subsequences
+     * @param nums
+     * @return
+     */
 
+    //freq 记录每个元素出现的次数
+    //need 记录哪些元素可以被接到其他子序列后面。
+    public boolean isPossible(int[] nums) {
+        HashMap<Integer, Integer> freg = new HashMap<>();
+        HashMap<Integer, Integer> need = new HashMap<>();
+        for (int i = 0; i < nums.length; i ++) {
+            freg.put(nums[i], freg.getOrDefault(nums[i], 0) + 1);
+        }
+        for (int i = 0; i < nums.length; i ++) {
+            if (freg.getOrDefault(nums[i], 0) == 0) {
+                continue;
+            }
+            if (need.containsKey(nums[i]) && need.get(nums[i]) > 0) {
+                freg.put(nums[i], freg.getOrDefault(nums[i], 0) - 1);
+                need.put(nums[i], need.getOrDefault(nums[i], 0) - 1);
+                need.put(nums[i] + 1, need.getOrDefault(nums[i] + 1, 0) + 1);
+            } else if (freg.getOrDefault(nums[i], 0) > 0
+                    && freg.getOrDefault(nums[i] + 1, 0) > 0
+                    && freg.getOrDefault(nums[i] + 2, 0) > 0) {
+                freg.put(nums[i], freg.getOrDefault(nums[i], 0) - 1);
+                freg.put(nums[i] + 1, freg.getOrDefault(nums[i] + 1, 0) - 1);
+                freg.put(nums[i] + 2, freg.getOrDefault(nums[i] + 2, 0) - 1);
+                need.put(nums[i] + 3, need.getOrDefault(nums[i] + 3, 0) + 1);
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public static void main(String[] args) {
         //System.out.println(canPartition(new int[]{1,2,3,5}));

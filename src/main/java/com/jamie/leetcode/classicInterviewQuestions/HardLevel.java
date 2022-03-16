@@ -1,8 +1,9 @@
 package com.jamie.leetcode.classicInterviewQuestions;
 
-import org.yaml.snakeyaml.util.ArrayStack;
-
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @PackageName: com.jamie.leetcode.classicInterviewQuestions
@@ -17,7 +18,7 @@ public class HardLevel {
      * @param height
      * @return
      */
-    public int trap(int[] height) {
+    public int trap2(int[] height) {
         if (height.length == 0) {
             return 0;
         }
@@ -39,12 +40,66 @@ public class HardLevel {
         return res;
     }
 
+
+    public int trap(int[] height) {
+        if(height.length == 0) {
+            return 0;
+        }
+        int n = height.length;
+        int res = 0;
+        int[] l_max = new int[n];
+        int[] r_max = new int[n];
+        l_max[0] = height[0];
+        r_max[n - 1] = height[n - 1];
+        for (int i = 1; i < n; i ++) {
+            l_max[i] = Math.max(l_max[i - 1], height[i]);
+        }
+        for (int i = n - 2; i >= 0; i --) {
+            r_max[i] = Math.max(r_max[i + 1], height[i]);
+        }
+
+        for(int i = 1; i < n - 1; i ++) {
+            res += Math.min(l_max[i], r_max[i]) - height[i];
+        }
+
+        return res;
+    }
+
+    /**
+     * 给定一个长度为 n 的整数数组height。有n条垂线，第 i 条线的两个端点是(i, 0)和(i, height[i])。
+     * 找出其中的两条线，使得它们与x轴共同构成的容器可以容纳最多的水。
+     * 返回容器可以储存的最大水量。
+     * @param height
+     * @return
+     */
+    public static int maxArea(int[] height) {
+        if (height.length == 0) {
+            return 0;
+        }
+        int left = 0;
+        int right = height.length - 1;
+        int res = 0;
+
+        while (left < right) {
+            if (height[left] < height[right]) {
+                res = Math.max( res,  height[left] * (right - left));
+                left ++;
+            } else {
+                res = Math.max( res,  height[right] * (right - left));
+                right --;
+            }
+        }
+        return res;
+    }
+
+
+
     /**
      * 给你 n 个非负整数 a1，a2，...，an，每个数代表坐标中的一个点 (i, ai) 。在坐标内画 n 条垂直线，垂直线 i 的两个端点分别为 (i, ai) 和 (i, 0) 。找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
      * @param height
      * @return
      */
-    public int maxArea(int[] height) {
+    public int maxArea2(int[] height) {
         int left = 0, right = height.length - 1;
         int res = 0;
         while (left < right) {
@@ -187,6 +242,10 @@ public class HardLevel {
      *
      * 把每个矩形的四个点放入 setset 检查，每出现 22 遍就移除，最后检查是否只剩下四个顶点
      *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/perfect-rectangle
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     *
      * @param rectangles
      * @return
      */
@@ -235,6 +294,10 @@ public class HardLevel {
 
     private int getKey(int x, int y){
         return x * 100001 + y;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(maxArea(new int[]{1,8,6,2,5,4,8,3,7}));
     }
 
 }
