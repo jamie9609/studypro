@@ -19,7 +19,7 @@ public class Demo1 {
      * @param k
      * @return
      */
-    public int findKthLargest(int[] nums, int k) {
+    public int findKthLargest1(int[] nums, int k) {
         // 小顶堆，堆顶是最小元素
         PriorityQueue<Integer> pQueue = new PriorityQueue<>();
         for (int e : nums) {
@@ -70,6 +70,83 @@ public class Demo1 {
             res.add(Integer.parseInt(input));
         }
         return res;
+    }
+
+    /**
+     * 给定整数数组 nums 和整数 k，请返回数组中第 k 个最大的元素。
+     * @param nums
+     * @param k
+     * @return
+     */
+    public static int findKthLargest(int[] nums, int k) {
+        // 构建小顶堆
+        int n = nums.length;
+        if ( k > nums.length) {
+            return -1;
+        }
+        if (k <= 0) {
+            return -1;
+        }
+
+        for (int i = getParentIndex(n - 1); i >= 0; i --) {
+            upFloat(nums, i, n - 1);
+        }
+
+        for(int i = 0; i < n - k; i ++) {
+            exchange(nums, 0, n - 1 - i);
+            upFloat(nums, 0, n - 2 - i);
+        }
+        return nums[0];
+    }
+
+    public static void upFloat (int[] list, int index, int end) {
+        int leftChildIndex = getLeftChildIndex(index);
+        int rightChildIndex = getRightChildIndex(index);
+
+        if (rightChildIndex > end && leftChildIndex > end) {
+            return;
+        }
+
+        int minChildIndex = 0;
+
+        if (rightChildIndex > end) {
+            minChildIndex = leftChildIndex;
+        } else if ( list[leftChildIndex] <= list[rightChildIndex] ){
+            minChildIndex = leftChildIndex;
+        } else {
+            minChildIndex = rightChildIndex;
+        }
+
+        if (list[index] < list[minChildIndex]) {
+            return;
+        }
+        exchange(list, index, minChildIndex);
+        upFloat(list, minChildIndex, end);
+    }
+
+
+    public static void exchange(int[] list, int oldIndex, int newIndex) {
+        int tmp = list[oldIndex];
+        list[oldIndex] = list[newIndex];
+        list[newIndex] = tmp;
+    }
+
+    public static int getParentIndex(int n) {
+        return (n - 1) / 2;
+    }
+
+    public static int getLeftChildIndex(int n) {
+        return 2 * n + 1;
+    }
+
+    public static int getRightChildIndex(int n) {
+        return 2 * n + 2;
+    }
+
+
+    public static void main(String[] args) {
+        int[] test1 = new int[]{3,2,3,1,2,4,5,5,6};
+        System.out.println(findKthLargest(test1, 2));
     }
 
 }
