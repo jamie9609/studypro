@@ -1,10 +1,8 @@
 package com.jamie.leetcode.treeNode;
 
-import jdk.internal.org.objectweb.asm.tree.analysis.BasicInterpreter;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -430,13 +428,13 @@ public class BSTTreeNode {
      */
 
     // 代表分隔符的字符
-    public static String SEP = ",";
+    public static String SEP1 = ",";
     // 代表 null 空指针的字符
-    public static String NULL = "#";
+    public static String NULL1 = "#";
     // 用于拼接字符串
     public static StringBuilder sb = new StringBuilder();
     // Encodes a tree to a single string.
-    public static String serialize(TreeNode root) {
+    public static String serialize1(TreeNode root) {
 
         helper4(root);
         return sb.toString();
@@ -444,19 +442,19 @@ public class BSTTreeNode {
 
     public static void helper4(TreeNode root) {
         if (Objects.isNull(root)) {
-            sb.append(NULL).append(SEP);
+            sb.append(NULL1).append(SEP1);
             return;
         }
 
-        sb.append(root.val).append(SEP);
+        sb.append(root.val).append(SEP1);
         helper4(root.left);
         helper4(root.right);
     }
 
     // Decodes your encoded data to tree.
-    public static TreeNode deserialize(String data) {
+    public static TreeNode deserialize1(String data) {
         LinkedList<String> nodes = new LinkedList<>();
-        for (String s : data.split(SEP)) {
+        for (String s : data.split(SEP1)) {
             nodes.addLast(s);
         }
         return helper4(nodes);
@@ -468,7 +466,7 @@ public class BSTTreeNode {
         }
         String s = nodes.removeFirst();
 
-        if (s.equals(NULL)) {
+        if (s.equals(NULL1)) {
             return null;
         }
         TreeNode root = new TreeNode(Integer.parseInt(s));
@@ -478,8 +476,67 @@ public class BSTTreeNode {
         return root;
     }
 
+    /**
+     *  二叉树的序列化与反序列化
+     *  https://leetcode-cn.com/problems/serialize-and-deserialize-binary-tree/
+     *  含空指针
+     * @param root
+     * @return
+     */
+    public static String SEP = ",";
+    public static String NULL = "#";
+    // Encodes a tree to a single string.
+    public static StringBuilder stringBuilder = new StringBuilder();
+    public static String serialize(TreeNode root) {
+        if (root == null) {
+            return "";
+        }
+        builders(root);
+        return stringBuilder.toString();
+    }
+    public static void builders(TreeNode root) {
+        if (root == null) {
+            stringBuilder.append(NULL).append(SEP);
+            return;
+        }
+        stringBuilder.append(root.val).append(SEP);
+        builders(root.left);
+        builders(root.right);
+    }
+
+    // Decodes your encoded data to tree.
+    public static TreeNode deserialize(String data) {
+        if (data.equals("")) {
+            return null;
+        }
+        LinkedList<String> nodes = new LinkedList<>();
+        for (String s : data.split(SEP)) {
+            nodes.addLast(s);
+        }
+        return builders2(nodes);
+    }
+
+    public static TreeNode builders2(LinkedList<String> stringsList) {
+        if (stringsList.isEmpty()) {
+            return null;
+        }
+        String s = stringsList.removeFirst();
+        if (s.equals(NULL)) {
+            return null;
+        }
+        TreeNode node = new TreeNode(Integer.parseInt(s));
+        node.left = builders2(stringsList);
+        node.right = builders2(stringsList);
+        return node;
+    }
+
+
 
     public static void main(String[] args) {
-        System.out.println(deserialize("1,2,3").val);
+        TreeNode treeNode = new TreeNode(1);
+        System.out.println(serialize(treeNode));
+        System.out.println(deserialize(serialize(treeNode)));
+
+
     }
 }
