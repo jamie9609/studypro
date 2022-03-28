@@ -78,7 +78,7 @@ public class Demo1 {
      * @param k
      * @return
      */
-    public static int findKthLargest(int[] nums, int k) {
+    public static int findKthLargest2(int[] nums, int k) {
         // 构建小顶堆
         int n = nums.length;
         if ( k > nums.length) {
@@ -143,6 +143,50 @@ public class Demo1 {
         return 2 * n + 2;
     }
 
+
+    public static int findKthLargest(int[] nums, int k) {
+        int lo = 0, hi = nums.length - 1;
+        k = nums.length - k;
+        while (lo <= hi) {
+            int p = partition(nums, lo, hi);
+            if (p < k) {
+                // 第 k 大的元素在 nums[p+1..hi] 中
+                lo = p + 1;
+            } else if (p > k) {
+                // 第 k 大的元素在 nums[lo..p-1] 中
+                hi = p - 1;
+            } else {
+                return nums[p];
+            }
+        }
+        return -1;
+    }
+
+    // 对 nums[lo..hi] 进行切分
+    private static int partition(int[] nums, int lo, int hi) {
+        int pivot = nums[lo];
+        int i = lo + 1, j = hi;
+        while (i <= j) {
+            while (i < hi && nums[i] <= pivot) {
+                i++;
+            }
+            while (j > lo && nums[j] > pivot) {
+                j--;
+            }
+            if (i >= j) {
+                break;
+            }
+            swap(nums, i, j);
+        }
+        swap(nums, lo, j);
+        return j;
+    }
+
+    private static void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
 
     public static void main(String[] args) {
         int[] test1 = new int[]{3,2,3,1,2,4,5,5,6};
